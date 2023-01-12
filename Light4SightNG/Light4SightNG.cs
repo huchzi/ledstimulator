@@ -102,8 +102,6 @@ namespace Light4SightNG
 
         }
 
-
-
         public void LogFile(string text, bool header)
         {
             if (clGlobals.flagDebugLog == true)
@@ -244,18 +242,6 @@ namespace Light4SightNG
             #endregion
 
 
-        }
-
-        public string LCheck(string KanalInfoString, double MHcdm2_max, double MHcdm2, int Kontrast)
-        {
-            double dLMax = (1 + (Kontrast / 100)) * MHcdm2;
-            double dLMin = (1 - (Kontrast / 100)) * MHcdm2;
-
-            if (dLMax > MHcdm2_max || dLMin < 0)
-                return ("Kontrastwert für " + KanalInfoString + " ist ungültig!");
-
-            else
-                return "OK";
         }
 
         private void SignalEigenschaftenEinlesen()

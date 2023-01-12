@@ -101,7 +101,6 @@
     <Compile Include="clAudioControl.cs" />
     <Compile Include="clGlobals.cs" />
     <Compile Include="clSignalDescription.cs" />
-    <Compile Include="clTestChannels.cs" />
     <Compile Include="Light4SightNG.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,7 +136,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="clSignalGeneration.cs" />
-    <None Include="StdStrategie.cs.bak" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

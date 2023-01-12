@@ -2,7 +2,7 @@
 
 namespace Light4SightNG
 {
-       // just a test
+    // just a test
     public class clSignalDescription
     {
         #region Variablen
