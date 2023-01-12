@@ -103,12 +103,6 @@
     <Compile Include="clGlobals.cs" />
     <Compile Include="clSignalDescription.cs" />
     <Compile Include="clTestChannels.cs" />
-    <Compile Include="Startfenster.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Startfenster.Designer.cs">
-      <DependentUpon>Startfenster.cs</DependentUpon>
-    </Compile>
     <Compile Include="Light4SightNG.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,9 +114,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StdStrategie.cs" />
-    <EmbeddedResource Include="Startfenster.resx">
-      <DependentUpon>Startfenster.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Light4SightNG.resx">
       <DependentUpon>Light4SightNG.cs</DependentUpon>
     </EmbeddedResource>
