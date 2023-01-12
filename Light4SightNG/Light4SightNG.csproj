@@ -99,7 +99,6 @@
   <ItemGroup>
     <Compile Include="EventArgs\AbbruchEventArgs.cs" />
     <Compile Include="clAudioControl.cs" />
-    <Compile Include="clCalibration.cs" />
     <Compile Include="clGlobals.cs" />
     <Compile Include="clSignalDescription.cs" />
     <Compile Include="clTestChannels.cs" />

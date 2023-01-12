@@ -98,8 +98,6 @@ namespace Light4SightNG
             channels.Add(OCChannel);
 
             treeView1.ExpandAll();
-            this.btnWertUebernehmenActive(false);
-            this.btnStopCalibrationActive(false);
             this.btnUntersuchungAbbrechenActive(false);
 
         }
@@ -142,8 +140,6 @@ namespace Light4SightNG
             this.pnlInnerBlue.Visible = false;
             this.pnlInnerCyan.Hide();
             this.pnlInnerCyan.Visible = false;
-            this.pnlCalibration.Hide();
-            this.pnlCalibration.Visible = false;
         }
 
         private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -237,20 +233,6 @@ namespace Light4SightNG
                             this.btnUntersuchungStartenActive(true);
                             this.pnlInnerCyan.Show();
                             this.pnlInnerCyan.Visible = true;
-                        }
-                        break;
-                    }
-                case "tnCalibration":
-                    {
-                        if (this.pnlCalibration.Visible == false)
-                        {
-                            this.closeAllPanels();
-                            this.tbUntersuchungsVerlauf.Visible = false;
-                            this.btnUntersuchungStartenActive(false);
-                            this.btnUntersuchungAbbrechenActive(false);
-                            this.pnlCalibration.Show();
-                            this.pnlCalibration.Visible = true;
-
                         }
                         break;
                     }
@@ -449,56 +431,6 @@ namespace Light4SightNG
             stdStrategie_abbruch(this, mye);
         }
 
-        private void btnStartCalibration_Click(object sender, EventArgs e)
-        {
-
-            //lblCalHinweis.Text = "Kanal 1: Messung 1 von 16";
-            this.btnWertUebernehmenActive(true);
-            this.btnStartCalibrationActive(false);
-            this.tbUntersuchungsVerlauf.Visible = false;
-            clCalibration.startcal();
-        }
-
-        /*    public void startHinweisChanger()
-            {
-                ThreadStart CalThreadStart = new ThreadStart(CalHinweisAendern);
-                m_CalHinweisThread = new Thread(CalThreadStart);
-                m_CalHinweisThread.Start();
-            }
-
-            public void CalHinweisAendern()
-            {
-                while (clGlobals.flagKalibrierungRunning == true)
-                {
-                    this.lblCalHinweis.Text = clGlobals.threadtest;
-                    Thread.Sleep(100);
-                }
-            }*/
-
-        public void btnStopCalibrationActive(bool bstatus)
-        {
-            if (bstatus == true)
-                this.btnStopCalibration.Enabled = true;
-            else
-                this.btnStopCalibration.Enabled = false;
-        }
-
-        public void btnWertUebernehmenActive(bool bstatus)
-        {
-            if (bstatus == true)
-                this.btnWertUebernehmen.Enabled = true;
-            else
-                this.btnWertUebernehmen.Enabled = false;
-        }
-
-        public void btnStartCalibrationActive(bool bstatus)
-        {
-            if (bstatus == true)
-                this.btnStartCalibration.Enabled = true;
-            else
-                this.btnStartCalibration.Enabled = false;
-        }
-
         public void btnUntersuchungStartenActive(bool bstatus)
         {
             if (bstatus == true)
@@ -514,19 +446,6 @@ namespace Light4SightNG
             else
                 this.btnUntersuchungAbbrechen.Enabled = false;
         }
-
-        private void btnWertUebernehmen_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                clGlobals.KalibrierungsMesswert = double.Parse(tbMesswert.Text);
-            }
-            catch { }
-            clGlobals.flagSignalWiedergabe = false;
-
-        }
-
-
 
         private void Light4SightNG_KeyDown(object sender, KeyEventArgs e)
         {

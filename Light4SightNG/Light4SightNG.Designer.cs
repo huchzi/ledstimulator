@@ -49,7 +49,6 @@
             System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Untersuchung", new System.Windows.Forms.TreeNode[] {
             treeNode5,
             treeNode10});
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Kalibrierung");
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.pnlOuterRed = new System.Windows.Forms.Panel();
             this.label62 = new System.Windows.Forms.Label();
@@ -324,11 +323,8 @@
             treeNode10.Text = "Centerfield";
             treeNode11.Name = "tnUntersuchung";
             treeNode11.Text = "Untersuchung";
-            treeNode12.Name = "tnCalibration";
-            treeNode12.Text = "Kalibrierung";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode11,
-            treeNode12});
+            treeNode11});
             this.treeView1.Size = new System.Drawing.Size(119, 375);
             this.treeView1.TabIndex = 2;
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
