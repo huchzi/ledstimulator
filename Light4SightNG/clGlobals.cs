@@ -1,8 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 
 
@@ -10,24 +7,24 @@ namespace Light4SightNG
 {
     internal static class clGlobals
     {
-        public static bool      bPlaySignal             = false;
-        public static bool      flagSignalWiedergabe    = false;
-        public static bool      flagDebugLog            = false;
-        public static bool      flagUntersuchunglaeuft = false;
+        public static bool bPlaySignal = false;
+        public static bool flagSignalWiedergabe = false;
+        public static bool flagDebugLog = false;
+        public static bool flagUntersuchunglaeuft = false;
 
         public static string LEDBereich = "alle";
         public static string Staircase = "beide";
 
-        public static byte[]    waveDaten;
+        public static byte[] waveDaten;
 
-        public static double[]  Kanal_1_IR;
-        public static double[]  Kanal_2_IG;
-        public static double[]  Kanal_3_IB;
-        public static double[]  Kanal_4_IC;
-        public static double[]  Kanal_5_OR;
-        public static double[]  Kanal_6_OG;
-        public static double[]  Kanal_7_OB;
-        public static double[]  Kanal_8_OC;
+        public static double[] Kanal_1_IR;
+        public static double[] Kanal_2_IG;
+        public static double[] Kanal_3_IB;
+        public static double[] Kanal_4_IC;
+        public static double[] Kanal_5_OR;
+        public static double[] Kanal_6_OG;
+        public static double[] Kanal_7_OB;
+        public static double[] Kanal_8_OC;
 
         // private static string[] strSteigungTmp      = new string[8];
         // private static string[] strSchnittpunktTmp  = new string[8];
@@ -37,18 +34,18 @@ namespace Light4SightNG
         private static string[] poly1Tmp = new string[8];
         private static string[] interceptTmp = new string[8];
         private static string[] dMaxMHTmp = new string[8];
-        
-        private static Int16    iANZAHL_KANAELE             = 8;												//acht Kanäle
-        private static int      iABTASTFREQUENZ             = 96000;											//Abtastrate für die Erzeugung der Audiodaten und für die Wiedergabe
-        private static int      iBYTES_PRO_SEKUNDE          = iANZAHL_KANAELE * iABTASTFREQUENZ * 2;			//Wiedergegebene Bytes pro Sekunde (8 Kanäle * 96000 samples pro Sekunde * 2 Byte pro Sample)			
-        private static Int16    iSAMPLE_CONTAINER_GROESSE   = 16;												//Größe eines Samples
-        private static Int16    iBLOCKAUSRICHTUNG           = (Int16)(iANZAHL_KANAELE * iSAMPLE_CONTAINER_GROESSE / 8);	//interne Struktur Wave-Daten (Blockausrichtung)
-        private static int      iTRAEGERFREQUENZ            = 20000;
-        private static int      iSAMPLE_LAENGE              = 1;
 
-        private static double   dDeltaPI        = (2 * Math.PI / iABTASTFREQUENZ);
-        private static double   dDeltaPhi       = iABTASTFREQUENZ / 360;
-        private static double   dDeltaPhiSinus  = (2 * Math.PI / 360);
+        private static Int16 iANZAHL_KANAELE = 8;												//acht Kanäle
+        private static int iABTASTFREQUENZ = 96000;											//Abtastrate für die Erzeugung der Audiodaten und für die Wiedergabe
+        private static int iBYTES_PRO_SEKUNDE = iANZAHL_KANAELE * iABTASTFREQUENZ * 2;			//Wiedergegebene Bytes pro Sekunde (8 Kanäle * 96000 samples pro Sekunde * 2 Byte pro Sample)			
+        private static Int16 iSAMPLE_CONTAINER_GROESSE = 16;												//Größe eines Samples
+        private static Int16 iBLOCKAUSRICHTUNG = (Int16)(iANZAHL_KANAELE * iSAMPLE_CONTAINER_GROESSE / 8);	//interne Struktur Wave-Daten (Blockausrichtung)
+        private static int iTRAEGERFREQUENZ = 20000;
+        private static int iSAMPLE_LAENGE = 1;
+
+        private static double dDeltaPI = (2 * Math.PI / iABTASTFREQUENZ);
+        private static double dDeltaPhi = iABTASTFREQUENZ / 360;
+        private static double dDeltaPhiSinus = (2 * Math.PI / 360);
 
         private static double dKalMesswert;
 
@@ -75,7 +72,7 @@ namespace Light4SightNG
             {
                 return dDeltaPI;
             }
-        } 
+        }
 
         public static Int16 AnzahlKanaele
         {

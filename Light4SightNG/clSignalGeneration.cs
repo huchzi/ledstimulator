@@ -1,8 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 
 
@@ -16,12 +12,12 @@ namespace Light4SightNG
         public static void Untersuchungssignal()
         {
             #region IR Kanal
-            
+
             if (Light4SightNG.IRChannel.SignalAktiv)
             {
                 IR_MHLR = 32700 * Light4SightNG.IRChannel.MittlereHelligkeit_100;
-                IR_KLR = (IR_MHLR * (1 + Light4SightNG.IRChannel.Kontrast_100/100)) - IR_MHLR;
-				//IR_KLR = ((32700 - IR_MHLR) / 100) * IRChannel.Kontrast_100;
+                IR_KLR = (IR_MHLR * (1 + Light4SightNG.IRChannel.Kontrast_100 / 100)) - IR_MHLR;
+                //IR_KLR = ((32700 - IR_MHLR) / 100) * IRChannel.Kontrast_100;
 
                 switch (Light4SightNG.IRChannel.Signalform)
                 {
@@ -112,7 +108,7 @@ namespace Light4SightNG
                         }
                 }
             }
-            
+
             #endregion
 
             #region IC Kanal
@@ -273,7 +269,7 @@ namespace Light4SightNG
                         }
                 }
             }
-            
+
             #endregion
             ConcatChannels();
 
@@ -466,16 +462,16 @@ namespace Light4SightNG
             double[] TempSinus = new Double[clGlobals.AbtastFrequenz];
             double dWinkel = 0.0;
 
-            for (int i = 0; i <= clGlobals.AbtastFrequenz-1; i++)
+            for (int i = 0; i <= clGlobals.AbtastFrequenz - 1; i++)
             {
-                TempSinus[i] = (double) ((MHLR + KLR * Math.Sin(Frequenz * clGlobals.DeltaPI * i + clGlobals.DeltaPhiSinus * Phasenwinkel)) * Math.Sin(dWinkel));
-                
+                TempSinus[i] = (double)((MHLR + KLR * Math.Sin(Frequenz * clGlobals.DeltaPI * i + clGlobals.DeltaPhiSinus * Phasenwinkel)) * Math.Sin(dWinkel));
+
                 dWinkel += 2 * Math.PI * clGlobals.TraegerFrequenz / clGlobals.AbtastFrequenz;
-			    if (dWinkel > 2 * Math.PI)
-				    dWinkel -= 2 * Math.PI;
+                if (dWinkel > 2 * Math.PI)
+                    dWinkel -= 2 * Math.PI;
             }
 
-            return TempSinus;         
+            return TempSinus;
         }
 
         private static double[] Rechteck(double MHLR, double KLR, int Frequenz, int Phasenwinkel)
@@ -484,10 +480,10 @@ namespace Light4SightNG
             int iPeriode = 0;
             double dWinkel = 0.0;
 
-            for (int i = 0; i <= clGlobals.AbtastFrequenz-1; i++)
+            for (int i = 0; i <= clGlobals.AbtastFrequenz - 1; i++)
             {
-                if (i == 0)	//wenn die Schleife das erste Mal durchlaufen wird muss der Anfangswert berechnet werden
-                iPeriode = (int)(clGlobals.DeltaPhi * Phasenwinkel) / Frequenz;
+                if (i == 0) //wenn die Schleife das erste Mal durchlaufen wird muss der Anfangswert berechnet werden
+                    iPeriode = (int)(clGlobals.DeltaPhi * Phasenwinkel) / Frequenz;
 
                 if (iPeriode >= (clGlobals.AbtastFrequenz / Frequenz))	//prüft ob die Anzahl der Abtastwerte für eine Periode des Rechteck-Signals überschritten wurde
                 {
@@ -511,7 +507,7 @@ namespace Light4SightNG
             }
 
             return TempRechteck;
-        
+
         }
 
         private static double[] OnRamp(double MHLR, double KLR, int Frequenz, int Phasenwinkel)
@@ -519,8 +515,8 @@ namespace Light4SightNG
             double[] TempOnRamp = new Double[clGlobals.AbtastFrequenz];
             int iPeriode = 0;
             double dWinkel = 0.0;
-            
-            for (int i = 0; i <= clGlobals.AbtastFrequenz-1; i++)
+
+            for (int i = 0; i <= clGlobals.AbtastFrequenz - 1; i++)
             {
                 if (i == 0)	//wenn die Schleife das erste Mal durchlaufen wird muss der Anfangswert berechnet werden
                     iPeriode = (int)(clGlobals.DeltaPhi * Phasenwinkel) / Frequenz;
@@ -541,7 +537,7 @@ namespace Light4SightNG
             }
 
             return TempOnRamp;
-        
+
         }
 
         private static double[] OffRamp(double MHLR, double KLR, int Frequenz, int Phasenwinkel)
@@ -550,7 +546,7 @@ namespace Light4SightNG
             int iPeriode = 0;
             double dWinkel = 0.0;
 
-            for (int i = 0; i <= clGlobals.AbtastFrequenz-1; i++)
+            for (int i = 0; i <= clGlobals.AbtastFrequenz - 1; i++)
             {
                 if (i == 0)	//wenn die Schleife das erste Mal durchlaufen wird muss der Anfangswert berechnet werden
                     iPeriode = (int)(clGlobals.DeltaPhi * Phasenwinkel) / Frequenz;
@@ -570,7 +566,7 @@ namespace Light4SightNG
             }
 
             return TempOffRamp;
-        
+
         }
 
         public static double[] StandardSinus(double Elongation)

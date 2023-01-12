@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using SlimDX;
-using SlimDX.XAudio2;
-using SlimDX.Multimedia;
-using System.Runtime.InteropServices;
-using WinMM;
+﻿using SlimDX.XAudio2;
+using System;
 using System.IO;
+using System.Threading;
 
 
 namespace Light4SightNG
@@ -27,7 +20,7 @@ namespace Light4SightNG
         private ThreadStart soundThreadStart = null;
 
 
-        
+
         public clAudioControl()
         {
             SignalFormat = new SlimDX.Multimedia.WaveFormat();
@@ -94,7 +87,7 @@ namespace Light4SightNG
 
             while (clGlobals.bPlaySignal)
             {
-                
+
                 Thread.Sleep(10);
             }
 
@@ -121,7 +114,7 @@ namespace Light4SightNG
         ~clAudioControl()
         {
             this.StopSignal();
-            
+
         }
 
         #region IDisposable Member
@@ -132,7 +125,7 @@ namespace Light4SightNG
 
             WaveMasterVoice.Dispose();
 
-    
+
             // AudioDevice.Dispose();
         }
 

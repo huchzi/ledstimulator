@@ -1,44 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Light4SightNG
 {
-
+       // just a test
     public class clSignalDescription
     {
-    #region Variablen
+        #region Variablen
         /// <summary>
         /// Private Eigenschaften des Objekts
         /// </summary>
-            
-            //Temps
-            private double dTempMH;
-            private int iTemp;
 
-            private int iFrequenz = 0, iPhasenverschiebung = 0;
-            private String sSignalform;
-            private double dMaxMHCal_cdm2 = 0.0;
-            private double poly4, poly3, poly2, poly1, intercept;
-            private double dMH_cdm2 = 0.0, dMH_100 = 0.0, dKontrast_100 = 0.0;
-            private double dKonSC1_100 = 0.0, dKonSC2_100 = 0.0;
-            private double dSC1DeltaK_100 = 0.0, dSC2DeltaK_100 = 0.0;
-            private bool bSignalaktiv = false, bFehler = false; //bFehler = true wenn ein Fehler aufgetreten ist
+        //Temps
+        private double dTempMH;
+        private int iTemp;
 
-    #endregion
+        private int iFrequenz = 0, iPhasenverschiebung = 0;
+        private String sSignalform;
+        private double dMaxMHCal_cdm2 = 0.0;
+        private double poly4, poly3, poly2, poly1, intercept;
+        private double dMH_cdm2 = 0.0, dMH_100 = 0.0, dKontrast_100 = 0.0;
+        private double dKonSC1_100 = 0.0, dKonSC2_100 = 0.0;
+        private double dSC1DeltaK_100 = 0.0, dSC2DeltaK_100 = 0.0;
+        private bool bSignalaktiv = false, bFehler = false; //bFehler = true wenn ein Fehler aufgetreten ist
 
-    #region Methoden
+        #endregion
+
+        #region Methoden
 
         public clSignalDescription()
         {
         }
 
         public double MaxMHCal
-        { 
+        {
             set
             {
-                dMaxMHCal_cdm2 = Math.Round(value,2);
+                dMaxMHCal_cdm2 = Math.Round(value, 2);
             }
 
             get
@@ -127,25 +124,25 @@ namespace Light4SightNG
 
         public double MittlereHelligkeit_cdm2
         {
-            
+
             set
             {
-                dTempMH = value;	
-			
-			    if (dTempMH >=0.0 && dTempMH <= dMaxMHCal_cdm2)	//Liegt der einegebene Signalparameter innerhalb des gültigen Bereichs?
-			    {
-				    dMH_cdm2 = dTempMH;	//wenn ja, dann der gekapselten Variable zuweisen
+                dTempMH = value;
+
+                if (dTempMH >= 0.0 && dTempMH <= dMaxMHCal_cdm2)    //Liegt der einegebene Signalparameter innerhalb des gültigen Bereichs?
+                {
+                    dMH_cdm2 = dTempMH;	//wenn ja, dann der gekapselten Variable zuweisen
                     // dMH_100  = Math.Round((dTempMH/dMaxMHCal_cdm2),3);
-                    dMH_100 = Math.Round((Math.Pow(dTempMH,4) * poly4 + Math.Pow(dTempMH,3) * poly3 + Math.Pow(dTempMH,2) * poly2 + dTempMH * poly1 + intercept), 3);
+                    dMH_100 = Math.Round((Math.Pow(dTempMH, 4) * poly4 + Math.Pow(dTempMH, 3) * poly3 + Math.Pow(dTempMH, 2) * poly2 + dTempMH * poly1 + intercept), 3);
                     if (dMH_100 < 0) { dMH_100 = 0; }
                     if (dMH_100 > 1) { dMH_100 = 1; }
-				    dTempMH = 0;	//für die nächste benutzung vorbereiten
-			    }
-			    else	//Wert liegt nicht im gültigen Bereich
-			    {
-				    dTempMH = 0;	//für die nächste Benutzung vorbereiten
-				    bFehler = true; //Fehlerindikator setzen
-			    }
+                    dTempMH = 0;    //für die nächste benutzung vorbereiten
+                }
+                else    //Wert liegt nicht im gültigen Bereich
+                {
+                    dTempMH = 0;    //für die nächste Benutzung vorbereiten
+                    bFehler = true; //Fehlerindikator setzen
+                }
             }
 
             get
@@ -197,7 +194,7 @@ namespace Light4SightNG
             {
                 dKontrast_100 = value;
             }
-            
+
         }
 
         public double SC1DeltaK_100
@@ -228,17 +225,17 @@ namespace Light4SightNG
         {
             set
             {
-                iTemp = value;	
-			    if (iTemp >=0 && iTemp <=359)			//wenn die Wandlung geklappt hat wird hier auf den gültigen Wertebereich geprüft
-			    {
-				    iPhasenverschiebung = iTemp;				//liegt der Wert innerhlab der Grenzen, wird er der gekapselten Variable zugewiesen
-				    iTemp = 0;							//für nächste Benutzung zurücksetzen			
-			    }
-			    else	//liegt der Wert außerhalb des gültigen Wertebereichs
-			    {
-				    iTemp = 0;							//für nächste Benutzung zurücksetzen
-				    bFehler = true;						//Fehlerindikatr setzen
-			    }
+                iTemp = value;
+                if (iTemp >= 0 && iTemp <= 359)         //wenn die Wandlung geklappt hat wird hier auf den gültigen Wertebereich geprüft
+                {
+                    iPhasenverschiebung = iTemp;                //liegt der Wert innerhlab der Grenzen, wird er der gekapselten Variable zugewiesen
+                    iTemp = 0;                          //für nächste Benutzung zurücksetzen			
+                }
+                else    //liegt der Wert außerhalb des gültigen Wertebereichs
+                {
+                    iTemp = 0;                          //für nächste Benutzung zurücksetzen
+                    bFehler = true;                     //Fehlerindikatr setzen
+                }
             }
 
             get
@@ -254,7 +251,7 @@ namespace Light4SightNG
                 return bFehler;
             }
         }
-    
-#endregion
+
+        #endregion
     }
 }

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -43,7 +38,7 @@ namespace Light4SightNG
         private Random dRand = new Random();
 
         public event EventHandler<AbbruchEventArgs> abbruch;
-        
+
         public StdStrategie(string LEDgruppe, bool CFFtest)
         {
             LED_Gruppe = LEDgruppe;
@@ -63,7 +58,7 @@ namespace Light4SightNG
         public void StartStdStrategie()
         {
             if (!testeCFF) InitValuesContrast(LED_Gruppe); else InitValuesCFF(LED_Gruppe);
-            
+
             #region Kontrastwerte der aktiven Kanäle einlesen
             if (Light4SightNG.IRChannel.SignalAktiv)
             {
@@ -71,7 +66,7 @@ namespace Light4SightNG
             }
             if (Light4SightNG.IGChannel.SignalAktiv)
             {
-               Kontrast_100[1] = Light4SightNG.IGChannel.KonSC1_100;
+                Kontrast_100[1] = Light4SightNG.IGChannel.KonSC1_100;
             }
             if (Light4SightNG.IBChannel.SignalAktiv)
             {
@@ -80,15 +75,15 @@ namespace Light4SightNG
             if (Light4SightNG.ICChannel.SignalAktiv)
             {
                 Kontrast_100[3] = Light4SightNG.ICChannel.KonSC1_100;
-             }
+            }
             if (Light4SightNG.ORChannel.SignalAktiv)
             {
                 Kontrast_100[4] = Light4SightNG.ORChannel.KonSC1_100;
             }
             if (Light4SightNG.OGChannel.SignalAktiv)
             {
-               Kontrast_100[5] = Light4SightNG.OGChannel.KonSC1_100;
-             }
+                Kontrast_100[5] = Light4SightNG.OGChannel.KonSC1_100;
+            }
             if (Light4SightNG.OBChannel.SignalAktiv)
             {
                 Kontrast_100[6] = Light4SightNG.OBChannel.KonSC1_100;
@@ -98,7 +93,7 @@ namespace Light4SightNG
                 Kontrast_100[7] = Light4SightNG.OCChannel.KonSC1_100;
             }
             #endregion
-           
+
             if (LED_Gruppe == "innen")
             #region unterscheidung welche led_gruppe und entsprechnde index zuweisung
             {
@@ -115,7 +110,7 @@ namespace Light4SightNG
                 cyan = 7;
             }
             #endregion
-            
+
             prepareLogFile();
             Randomisierung();
         }
@@ -186,7 +181,7 @@ namespace Light4SightNG
                             neuerFaktorSC1 = faktorSC1 + faktorStepSC1;
                             if (ChangeContrast(LED_Gruppe, neuerFaktorSC1, logmessage))
                             {
-             
+
                                 faktorSC1 = neuerFaktorSC1;
                                 bk7 = TesteAbbruch(faktorSC1, faktorStepSC1, true);
                             }
@@ -222,7 +217,7 @@ namespace Light4SightNG
                 #endregion
 
                 if (bk7) Logmessage(logKontraste, false);
-                
+
                 if (SC1_7 == true && SC2_7 == true)
                 {
                     this.OnAbbruch(new AbbruchEventArgs(""));
@@ -230,7 +225,7 @@ namespace Light4SightNG
 
                 if (SC1_7 == false)
                 {
-                    if (iDurchlaufSC1 == 1) SC1_gesehen_alt = true; 
+                    if (iDurchlaufSC1 == 1) SC1_gesehen_alt = true;
                     else SC1_gesehen_alt = SC1_gesehen;
                     SignalWiedergeben();
                     iDurchlaufSC1++;
@@ -353,7 +348,7 @@ namespace Light4SightNG
 
                 if (SC2_7 == false)
                 {
-                    if (iDurchlaufSC2 == 1) SC2_gesehen_alt = false; 
+                    if (iDurchlaufSC2 == 1) SC2_gesehen_alt = false;
                     else SC2_gesehen_alt = SC2_gesehen;
                     SignalWiedergeben();
                     iDurchlaufSC2++;
@@ -392,7 +387,7 @@ namespace Light4SightNG
                     logKontraste = logmessage + Light4SightNG.ORChannel.Kontrast_100 + ";" + Light4SightNG.OGChannel.Kontrast_100 + ";" + Light4SightNG.OBChannel.Kontrast_100 + ";" + Light4SightNG.OCChannel.Kontrast_100;
                 }
             }
-            else 
+            else
             {
                 if (LED_Gruppe == "innen")
                 {
@@ -490,8 +485,8 @@ namespace Light4SightNG
         private void prepareLogFile()
         {
             string line2, line3, line4, line5, line6, line7, line8, line9, line10;
-            Logmessage(";;Centerfield;;;;;Surroundfield;;",true);
-            Logmessage(";;R;G;B;C;;R;G;B;C;",true);
+            Logmessage(";;Centerfield;;;;;Surroundfield;;", true);
+            Logmessage(";;R;G;B;C;;R;G;B;C;", true);
 
             if (Light4SightNG.IRChannel.SignalAktiv == true)
             {
@@ -517,7 +512,7 @@ namespace Light4SightNG
                 line9 = ("Delta Kontrast SC1;;;");
                 line10 = ("Delta Kontrast SC2;;;");
             }
-              
+
             if (Light4SightNG.IGChannel.SignalAktiv == true)
             {
                 line2 = (line2 + Light4SightNG.IGChannel.SignalAktiv.ToString() + ";");
@@ -618,7 +613,7 @@ namespace Light4SightNG
                 line9 = (line9 + ";");
                 line10 = (line10 + ";");
             }
-              
+
             if (Light4SightNG.OGChannel.SignalAktiv == true)
             {
                 line2 = (line2 + Light4SightNG.OGChannel.SignalAktiv.ToString() + ";");
@@ -695,8 +690,8 @@ namespace Light4SightNG
             }
 
             Logmessage(line2, true);
-            Logmessage(line3,true);
-            Logmessage(line4,true);
+            Logmessage(line3, true);
+            Logmessage(line4, true);
             Logmessage(line5, true);
             Logmessage(line6, true);
             Logmessage(line7, true);

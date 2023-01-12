@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 
 namespace Light4SightNG
 {
@@ -40,7 +36,7 @@ namespace Light4SightNG
                 else
                     return ("");
             }
-            catch 
+            catch
             {
                 return ("Fehler beim Schreiben in " + this.filename);
             }

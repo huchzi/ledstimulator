@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using System.Text;
-using System.Windows.Forms;
 
 
 namespace Light4SightNG
 {
     internal static class clCalibration
     {
-        
-    
-        private static double[,] daMesswerte = new double[8,6];
 
-        private static double[] daMesspunkte = new double[6] {0.02,0.04,0.1,0.4,0.7,1.0};
-        
+
+        private static double[,] daMesswerte = new double[8, 6];
+
+        private static double[] daMesspunkte = new double[6] { 0.02, 0.04, 0.1, 0.4, 0.7, 1.0 };
+
         private static int iMesspunkt, iKanal;
 
         private static double[] dSteigungKanal = new double[8];
@@ -51,7 +47,7 @@ namespace Light4SightNG
                     AudioControl.PlaySignal();
                     clGlobals.flagSignalWiedergabe = true;
 
-                    while (clGlobals.flagSignalWiedergabe==true)
+                    while (clGlobals.flagSignalWiedergabe == true)
                     {
                         Thread.Sleep(100);
                     }
@@ -63,8 +59,8 @@ namespace Light4SightNG
                         if (frm is Light4SightNG)
                             (frm as Light4SightNG).lblCalHinweis.Text = "Kanal "+ (iKanal+1) + ": Messung "+ (iMesspunkt+1) + "von 16";
                     }*/
-                    
-                    daMesswerte[iKanal,iMesspunkt] = clGlobals.KalibrierungsMesswert;
+
+                    daMesswerte[iKanal, iMesspunkt] = clGlobals.KalibrierungsMesswert;
                     AudioControl.StopSignal();
                     clSignalGeneration.ClearChannelArrays();
                 }
@@ -72,16 +68,16 @@ namespace Light4SightNG
             LineareRegression();
         }
 
-      /*  private static void CalHinweisChanger(int iKanal, int iMesspunkt)
-        {
-            //string strtext = "Kanal " + (iKanal + 1) + ": Messung " + (iMesspunkt + 1) + "von 16";
-            /*foreach (Form frm in Application.OpenForms)
-            {
-                if (frm is Light4SightNG)
-                    (frm as Light4SightNG).Invoke(Light4SightNG.ActiveForm.Invoke( CalHinweisAendern,strtext);
-            }*/
-            //Light4SightNG.ActiveForm.BeginInvoke(CalHinweisAendern, strtext);
-       /* }*/
+        /*  private static void CalHinweisChanger(int iKanal, int iMesspunkt)
+          {
+              //string strtext = "Kanal " + (iKanal + 1) + ": Messung " + (iMesspunkt + 1) + "von 16";
+              /*foreach (Form frm in Application.OpenForms)
+              {
+                  if (frm is Light4SightNG)
+                      (frm as Light4SightNG).Invoke(Light4SightNG.ActiveForm.Invoke( CalHinweisAendern,strtext);
+              }*/
+        //Light4SightNG.ActiveForm.BeginInvoke(CalHinweisAendern, strtext);
+        /* }*/
 
         private static void LineareRegression()
         {	//Funktion für die lineare Regression.
@@ -93,21 +89,21 @@ namespace Light4SightNG
             double dyDurchschnittKanal5 = 0, dyDurchschnittKanal6 = 0, dyDurchschnittKanal7 = 0, dyDurchschnittKanal8 = 0;
             double dxQuadrat = 0;
             double dsk1, dsk2, dsk3, dsk4, dsk5, dsk6, dsk7, dsk8;
-   
+
             //Durchschnitte der einzelnen Kanäle (dyDurchschnittKanalX) und der Messpunkte (dxDurschnittMesspunkte) berechnen
             //dxDurchschnittMesspunkte    = daMesspunkte.Average();
             //dyDurchschnittKanal1        = daMesswerte
             for (int i = 0; i < 6; i++)
             {
                 dxDurchschnittMesspunkte = dxDurchschnittMesspunkte + daMesspunkte[i];
-                dyDurchschnittKanal1 = dyDurchschnittKanal1 + daMesswerte[0,i];
-                dyDurchschnittKanal2 = dyDurchschnittKanal2 + daMesswerte[1,i];
-                dyDurchschnittKanal3 = dyDurchschnittKanal3 + daMesswerte[2,i];
-                dyDurchschnittKanal4 = dyDurchschnittKanal4 + daMesswerte[3,i];
-                dyDurchschnittKanal5 = dyDurchschnittKanal5 + daMesswerte[4,i];
-                dyDurchschnittKanal6 = dyDurchschnittKanal6 + daMesswerte[5,i];
-                dyDurchschnittKanal7 = dyDurchschnittKanal7 + daMesswerte[6,i];
-                dyDurchschnittKanal8 = dyDurchschnittKanal8 + daMesswerte[7,i];
+                dyDurchschnittKanal1 = dyDurchschnittKanal1 + daMesswerte[0, i];
+                dyDurchschnittKanal2 = dyDurchschnittKanal2 + daMesswerte[1, i];
+                dyDurchschnittKanal3 = dyDurchschnittKanal3 + daMesswerte[2, i];
+                dyDurchschnittKanal4 = dyDurchschnittKanal4 + daMesswerte[3, i];
+                dyDurchschnittKanal5 = dyDurchschnittKanal5 + daMesswerte[4, i];
+                dyDurchschnittKanal6 = dyDurchschnittKanal6 + daMesswerte[5, i];
+                dyDurchschnittKanal7 = dyDurchschnittKanal7 + daMesswerte[6, i];
+                dyDurchschnittKanal8 = dyDurchschnittKanal8 + daMesswerte[7, i];
             }
             dxDurchschnittMesspunkte = dxDurchschnittMesspunkte / 6;
             dyDurchschnittKanal1 = dyDurchschnittKanal1 / 6;
@@ -118,7 +114,7 @@ namespace Light4SightNG
             dyDurchschnittKanal6 = dyDurchschnittKanal6 / 6;
             dyDurchschnittKanal7 = dyDurchschnittKanal7 / 6;
             dyDurchschnittKanal8 = dyDurchschnittKanal8 / 6;
-            
+
 
             // Summen der Abweichungsquadrate berechnen
             for (int i = 0; i < 6; i++)
@@ -167,8 +163,8 @@ namespace Light4SightNG
             }
 
             calibrationfile = new LogWriter(".\\calibrationdata.csv", false);
-            string strtmp1="", strtmp2="";
-            for (int i=0; i <= 7; i++)
+            string strtmp1 = "", strtmp2 = "";
+            for (int i = 0; i <= 7; i++)
             {
                 strtmp1 = strtmp1 + dSteigungKanal[i] + ";";
                 strtmp2 = strtmp2 + dySchnittpunkt[i] + ";";

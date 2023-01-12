@@ -1,11 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Drawing;
-using System.Text;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -24,25 +19,25 @@ namespace Light4SightNG
         public static clSignalDescription OCChannel = new clSignalDescription();
 
         public static int cff;
-        
+
         private StdStrategie stdStrategie;
 
         private List<clSignalDescription> channels = new List<clSignalDescription>();
-                
+
         //Objekt für die Audioschnittstelle. Dient der Steuerung der Wiedergabe(Start,Stop,Puffer)
         private clAudioControl AudioControl = new clAudioControl();
 
         //private Thread m_CalHinweisThread = null;
 
         //Objekte für Logging und Debugging
-        
+
         public LogWriter logfiletmp;//Wird durch die Funktion LogFile an die Namenskonvention von DebugFile angepasst
         //public LogWriter DebugFile = new LogWriter("debugdata.txt", true);
 
         public Light4SightNG()
         {
             InitializeComponent();
-            
+
             #region Kalibrierung einlesen und MaxWerte berechnen/anzeigen
             if (clGlobals.KalibrierungsdatenLesen() == 0)
             {
@@ -53,7 +48,7 @@ namespace Light4SightNG
                 this.lblIGMHMax.Text = clGlobals.dMaxMH(1).ToString();
                 IGChannel.MaxMHCal = clGlobals.dMaxMH(1);
                 IGChannel.ParameterPolynom(clGlobals.poly4(1), clGlobals.poly3(1), clGlobals.poly2(1), clGlobals.poly1(1), clGlobals.intercept(1));
-                
+
                 this.lblIBMHMax.Text = clGlobals.dMaxMH(2).ToString();
                 IBChannel.MaxMHCal = clGlobals.dMaxMH(2);
                 IBChannel.ParameterPolynom(clGlobals.poly4(2), clGlobals.poly3(2), clGlobals.poly2(2), clGlobals.poly1(2), clGlobals.intercept(2));
@@ -99,7 +94,7 @@ namespace Light4SightNG
             channels.Add(ICChannel);
             channels.Add(ORChannel);
             channels.Add(OGChannel);
-            channels.Add(OBChannel); 
+            channels.Add(OBChannel);
             channels.Add(OCChannel);
 
             treeView1.ExpandAll();
@@ -255,7 +250,7 @@ namespace Light4SightNG
                             this.btnUntersuchungAbbrechenActive(false);
                             this.pnlCalibration.Show();
                             this.pnlCalibration.Visible = true;
-                            
+
                         }
                         break;
                     }
@@ -273,10 +268,10 @@ namespace Light4SightNG
         {
             double dLMax = (1 + (Kontrast / 100)) * MHcdm2;
             double dLMin = (1 - (Kontrast / 100)) * MHcdm2;
-            
+
             if (dLMax > MHcdm2_max || dLMin < 0)
                 return ("Kontrastwert für " + KanalInfoString + " ist ungültig!");
-            
+
             else
                 return "OK";
         }
@@ -389,7 +384,7 @@ namespace Light4SightNG
 
 
         }
- 
+
         private void btnUntersuchungStarten_Click(object sender, EventArgs e)
         {
             if (CheckProband())
@@ -397,7 +392,7 @@ namespace Light4SightNG
                 DateTime time = DateTime.Now;
                 string format = "yyyy-MM-dd_HHmmss";
 
-                logfiletmp = new LogWriter(tbProbandenNummer.Text.ToString() + "_" + this.cbAugenseite.Text.ToString() +"_" + time.ToString(format) + ".txt", false);
+                logfiletmp = new LogWriter(tbProbandenNummer.Text.ToString() + "_" + this.cbAugenseite.Text.ToString() + "_" + time.ToString(format) + ".txt", false);
                 //stdStrategie = new StdStrategie();
                 //stdStrategie.abbruch += new EventHandler<AbbruchEventArgs>(stdStrategie_abbruch);
                 this.SignalEigenschaftenEinlesen();
@@ -412,9 +407,9 @@ namespace Light4SightNG
                 this.treeView1.Enabled = false;
                 this.KeyPreview = true;
 
-                    stdStrategie = new StdStrategie();
-                    stdStrategie.abbruch += new EventHandler<AbbruchEventArgs>(stdStrategie_abbruch);
-                    stdStrategie.StartStdStrategie();
+                stdStrategie = new StdStrategie();
+                stdStrategie.abbruch += new EventHandler<AbbruchEventArgs>(stdStrategie_abbruch);
+                stdStrategie.StartStdStrategie();
 
 
             }
@@ -433,7 +428,7 @@ namespace Light4SightNG
         void stdStrategie_abbruch(object sender, AbbruchEventArgs e)
         {
             this.KeyPreview = false;
-            if (stdStrategie!=null)
+            if (stdStrategie != null)
             {
                 stdStrategie.SignalStoppen();
                 Thread.Sleep(100);
@@ -456,7 +451,7 @@ namespace Light4SightNG
 
         private void btnStartCalibration_Click(object sender, EventArgs e)
         {
-            
+
             //lblCalHinweis.Text = "Kanal 1: Messung 1 von 16";
             this.btnWertUebernehmenActive(true);
             this.btnStartCalibrationActive(false);
@@ -464,21 +459,21 @@ namespace Light4SightNG
             clCalibration.startcal();
         }
 
-    /*    public void startHinweisChanger()
-        {
-            ThreadStart CalThreadStart = new ThreadStart(CalHinweisAendern);
-            m_CalHinweisThread = new Thread(CalThreadStart);
-            m_CalHinweisThread.Start();
-        }
-
-        public void CalHinweisAendern()
-        {
-            while (clGlobals.flagKalibrierungRunning == true)
+        /*    public void startHinweisChanger()
             {
-                this.lblCalHinweis.Text = clGlobals.threadtest;
-                Thread.Sleep(100);
+                ThreadStart CalThreadStart = new ThreadStart(CalHinweisAendern);
+                m_CalHinweisThread = new Thread(CalThreadStart);
+                m_CalHinweisThread.Start();
             }
-        }*/
+
+            public void CalHinweisAendern()
+            {
+                while (clGlobals.flagKalibrierungRunning == true)
+                {
+                    this.lblCalHinweis.Text = clGlobals.threadtest;
+                    Thread.Sleep(100);
+                }
+            }*/
 
         public void btnStopCalibrationActive(bool bstatus)
         {
@@ -549,7 +544,7 @@ namespace Light4SightNG
         {
             this.KeyPreview = false;
             AudioControl.Dispose();
-            
+
         }
 
         private void btnLoadPreset_Click(object sender, EventArgs e)
@@ -671,7 +666,7 @@ namespace Light4SightNG
             SignalEigenschaftenEinlesen();
             DirectoryInfo d = new DirectoryInfo(@".\presets\");
             d.Create();
-            
+
             saveFileDialog1.InitialDirectory = Path.GetDirectoryName(Application.ExecutablePath).ToString() + @"\presets\";
             saveFileDialog1.RestoreDirectory = true;
             saveFileDialog1.Filter = "preset files (*.pre)|*.pre";
@@ -703,7 +698,7 @@ namespace Light4SightNG
 
 
 
-     
+
 
 
 
