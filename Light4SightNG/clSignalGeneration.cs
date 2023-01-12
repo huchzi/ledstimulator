@@ -275,7 +275,7 @@ namespace Light4SightNG
 
         }
 
-        public static void KalibrierungsSignal(int Kanal, double Elongation)
+        public static void CalibrationSignal(int Kanal, double Elongation)
         {
             double dValue = 0.0;
             double dWinkel = 0.0;
@@ -286,7 +286,8 @@ namespace Light4SightNG
 
             for (i = 0; i <= (clGlobals.AbtastFrequenz - 1); i++) //Schleife wird entsprechend der Abtastrate durchlaufen und generiert so ein Audiosignal für eine Sekunde
             {
-                for (k = 0; k < Kanal; k++)	//entsprechend dem übergebenen Kanal die davor befindlichen Kanäle mit o Werten füllen
+                // fill all channels with 0 first
+                for (k = 0; k < 8; k++)
                 {
                     WriteToWaveContainer(zero, k, i);
                 }
@@ -294,15 +295,12 @@ namespace Light4SightNG
                 //******** Trägerfrequenzsignal für die Ausgabe berechnen *********
                 dValue = (double)((Elongation * 32700) * Math.Sin(dWinkel));	//Trägerfrequenz Elongation entsprechend der übergebenen amplitude berechnen
                 WriteToWaveContainer(dValue, Kanal, i);
+                WriteToWaveContainer(dValue, Kanal + 4, i);
 
                 dWinkel += 2 * Math.PI * clGlobals.TraegerFrequenz / clGlobals.AbtastFrequenz;
                 if (dWinkel > 2 * Math.PI)
                     dWinkel -= 2 * Math.PI;
 
-                for (int rest = Kanal + 1; rest < 7; rest++)	//entsprechend dem übergebenen Kanal die dahinter befindlichen Kanäle mit 0 Werten füllen
-                {
-                    WriteToWaveContainer(zero, rest, i);
-                }
             }
 
         }

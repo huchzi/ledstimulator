@@ -175,16 +175,6 @@ namespace Light4SightNG
             }
         }
 
-        //public static double aSteigung(int Kanal)
-        //{
-        //    return (double.Parse(strSteigungTmp[Kanal]));
-        //}
-
-        //public static double aSchnittpunkt(int Kanal)
-        //{
-        //    return (double.Parse(strSchnittpunktTmp[Kanal]));
-        //}
-
         public static double dMaxMH(int Kanal)
         {
             return (double.Parse(dMaxMHTmp[Kanal]));

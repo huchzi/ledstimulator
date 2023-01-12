@@ -19,53 +19,28 @@ namespace Light4SightNG
 
         private void StartCalibration_Click(object sender, EventArgs e)
         {
-            clGlobals.Kanal_1_IR = MaxSignal();
-            clGlobals.Kanal_2_IG = VoidSignal();
-            clGlobals.Kanal_3_IB = VoidSignal();
-            clGlobals.Kanal_4_IC = VoidSignal();
-            clGlobals.Kanal_5_OR = VoidSignal();
-            clGlobals.Kanal_6_OG = VoidSignal();
-            clGlobals.Kanal_7_OB = VoidSignal();
-            clGlobals.Kanal_8_OC = VoidSignal();
 
             Start.Enabled = false;
-            clAudioControl calAudo = new clAudioControl();
+
+            // Give 5 sec for darkening the room
             Thread.Sleep(5000);
 
-            for (int i = 0; i < 8; i++)
+            clAudioControl calAudio = new clAudioControl();
+            for (int i = 0; i < 4; i++)
             {
-                calAudo.InitWaveContainer();
-                clSignalGeneration.KalibrierungsSignal(i, 1.0);
-                calAudo.PlaySignal();
-                Thread.Sleep(2000);
-                calAudo.StopSignal();
-                Thread.Sleep(2000);
-                Start.Enabled = true;
+                for (int j = 0; j <= 100; j+= 10)
+                {
+                    calAudio.InitWaveContainer();
+                    clSignalGeneration.CalibrationSignal(i, j / 100.0);
+                    calAudio.PlaySignal();
+                    Thread.Sleep(1000);
+                    calAudio.StopSignal();
+                    Thread.Sleep(100);
+                }
             }
+            Start.Enabled = true;
+
         }
 
-        private static double[] VoidSignal()
-        {
-            double[] VoidValues = new Double[clGlobals.AbtastFrequenz];
-
-            for (int i = 0; i <= clGlobals.AbtastFrequenz - 1; i++)
-            {
-                VoidValues[i] = 0.0;
-            }
-
-            return VoidValues;
-        }
-
-        private static double[] MaxSignal()
-        {
-            double[] MaxValues = new Double[clGlobals.AbtastFrequenz];
-
-            for (int i = 0; i <= clGlobals.AbtastFrequenz - 1; i++)
-            {
-                MaxValues[i] = 1.0;
-            }
-
-            return MaxValues;
-        }
     }
 }
