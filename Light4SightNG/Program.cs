@@ -6,7 +6,7 @@ namespace Light4SightNG
     static class Program
     {
         /// <summary>
-        /// Der Haupteinstiegspunkt für die Anwendung.
+        /// Main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()

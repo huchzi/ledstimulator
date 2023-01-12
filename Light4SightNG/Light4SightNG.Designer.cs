@@ -28,28 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Rot");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Grün");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Blau");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Cyan");
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Surroundfield", new System.Windows.Forms.TreeNode[] {
-            treeNode13,
-            treeNode14,
-            treeNode15,
-            treeNode16});
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Rot");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Grün");
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Blau");
-            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Cyan");
-            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Centerfield", new System.Windows.Forms.TreeNode[] {
-            treeNode18,
-            treeNode19,
-            treeNode20,
-            treeNode21});
-            System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("Untersuchung", new System.Windows.Forms.TreeNode[] {
-            treeNode17,
-            treeNode22});
-            System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("Kalibrierung");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Rot");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Grün");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Blau");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Cyan");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Surroundfield", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2,
+            treeNode3,
+            treeNode4});
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Rot");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Grün");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Blau");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Cyan");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Centerfield", new System.Windows.Forms.TreeNode[] {
+            treeNode6,
+            treeNode7,
+            treeNode8,
+            treeNode9});
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Untersuchung", new System.Windows.Forms.TreeNode[] {
+            treeNode5,
+            treeNode10});
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Kalibrierung");
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.pnlOuterRed = new System.Windows.Forms.Panel();
             this.label62 = new System.Windows.Forms.Label();
@@ -242,14 +242,6 @@
             this.lblSigFormOC = new System.Windows.Forms.Label();
             this.cbSigFormOC = new System.Windows.Forms.ComboBox();
             this.btnUntersuchungStarten = new System.Windows.Forms.Button();
-            this.pnlCalibration = new System.Windows.Forms.Panel();
-            this.lblCalHinweis = new System.Windows.Forms.Label();
-            this.btnStopCalibration = new System.Windows.Forms.Button();
-            this.btnStartCalibration = new System.Windows.Forms.Button();
-            this.lblStatusMessage = new System.Windows.Forms.Label();
-            this.tbMesswert = new System.Windows.Forms.TextBox();
-            this.btnWertUebernehmen = new System.Windows.Forms.Button();
-            this.lblNameCalibration = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.einstellungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -301,7 +293,6 @@
             this.pnlInnerBlue.SuspendLayout();
             this.pnlInnerCyan.SuspendLayout();
             this.pnlOuterCyan.SuspendLayout();
-            this.pnlCalibration.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.pnlInnerRed.SuspendLayout();
             this.gbProband.SuspendLayout();
@@ -311,33 +302,33 @@
             // 
             this.treeView1.Location = new System.Drawing.Point(32, 50);
             this.treeView1.Name = "treeView1";
-            treeNode13.Name = "tnOuterRed";
-            treeNode13.Text = "Rot";
-            treeNode14.Name = "tnOuterGreen";
-            treeNode14.Text = "Grün";
-            treeNode15.Name = "tnOuterBlue";
-            treeNode15.Text = "Blau";
-            treeNode16.Name = "tnOuterCyan";
-            treeNode16.Text = "Cyan";
-            treeNode17.Name = "tnSurroundField";
-            treeNode17.Text = "Surroundfield";
-            treeNode18.Name = "tnInnerRed";
-            treeNode18.Text = "Rot";
-            treeNode19.Name = "tnInnerGreen";
-            treeNode19.Text = "Grün";
-            treeNode20.Name = "tnInnerBlue";
-            treeNode20.Text = "Blau";
-            treeNode21.Name = "tnInnerCyan";
-            treeNode21.Text = "Cyan";
-            treeNode22.Name = "tnCenterField";
-            treeNode22.Text = "Centerfield";
-            treeNode23.Name = "tnUntersuchung";
-            treeNode23.Text = "Untersuchung";
-            treeNode24.Name = "tnCalibration";
-            treeNode24.Text = "Kalibrierung";
+            treeNode1.Name = "tnOuterRed";
+            treeNode1.Text = "Rot";
+            treeNode2.Name = "tnOuterGreen";
+            treeNode2.Text = "Grün";
+            treeNode3.Name = "tnOuterBlue";
+            treeNode3.Text = "Blau";
+            treeNode4.Name = "tnOuterCyan";
+            treeNode4.Text = "Cyan";
+            treeNode5.Name = "tnSurroundField";
+            treeNode5.Text = "Surroundfield";
+            treeNode6.Name = "tnInnerRed";
+            treeNode6.Text = "Rot";
+            treeNode7.Name = "tnInnerGreen";
+            treeNode7.Text = "Grün";
+            treeNode8.Name = "tnInnerBlue";
+            treeNode8.Text = "Blau";
+            treeNode9.Name = "tnInnerCyan";
+            treeNode9.Text = "Cyan";
+            treeNode10.Name = "tnCenterField";
+            treeNode10.Text = "Centerfield";
+            treeNode11.Name = "tnUntersuchung";
+            treeNode11.Text = "Untersuchung";
+            treeNode12.Name = "tnCalibration";
+            treeNode12.Text = "Kalibrierung";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode23,
-            treeNode24});
+            treeNode11,
+            treeNode12});
             this.treeView1.Size = new System.Drawing.Size(119, 375);
             this.treeView1.TabIndex = 2;
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
@@ -2217,86 +2208,6 @@
             this.btnUntersuchungStarten.UseVisualStyleBackColor = true;
             this.btnUntersuchungStarten.Click += new System.EventHandler(this.btnUntersuchungStarten_Click);
             // 
-            // pnlCalibration
-            // 
-            this.pnlCalibration.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.pnlCalibration.Controls.Add(this.lblCalHinweis);
-            this.pnlCalibration.Controls.Add(this.btnStopCalibration);
-            this.pnlCalibration.Controls.Add(this.btnStartCalibration);
-            this.pnlCalibration.Controls.Add(this.lblStatusMessage);
-            this.pnlCalibration.Controls.Add(this.tbMesswert);
-            this.pnlCalibration.Controls.Add(this.btnWertUebernehmen);
-            this.pnlCalibration.Controls.Add(this.lblNameCalibration);
-            this.pnlCalibration.Location = new System.Drawing.Point(175, 50);
-            this.pnlCalibration.Name = "pnlCalibration";
-            this.pnlCalibration.Size = new System.Drawing.Size(382, 375);
-            this.pnlCalibration.TabIndex = 7;
-            this.pnlCalibration.Visible = false;
-            // 
-            // lblCalHinweis
-            // 
-            this.lblCalHinweis.AutoSize = true;
-            this.lblCalHinweis.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCalHinweis.Location = new System.Drawing.Point(39, 59);
-            this.lblCalHinweis.Name = "lblCalHinweis";
-            this.lblCalHinweis.Size = new System.Drawing.Size(340, 16);
-            this.lblCalHinweis.TabIndex = 35;
-            this.lblCalHinweis.Text = "Für die Kalibrierung muss der Wert abgedunkelt werden.";
-            // 
-            // btnStopCalibration
-            // 
-            this.btnStopCalibration.Location = new System.Drawing.Point(125, 331);
-            this.btnStopCalibration.Name = "btnStopCalibration";
-            this.btnStopCalibration.Size = new System.Drawing.Size(75, 23);
-            this.btnStopCalibration.TabIndex = 34;
-            this.btnStopCalibration.Text = "Abbrechen";
-            this.btnStopCalibration.UseVisualStyleBackColor = true;
-            // 
-            // btnStartCalibration
-            // 
-            this.btnStartCalibration.Location = new System.Drawing.Point(39, 331);
-            this.btnStartCalibration.Name = "btnStartCalibration";
-            this.btnStartCalibration.Size = new System.Drawing.Size(75, 23);
-            this.btnStartCalibration.TabIndex = 33;
-            this.btnStartCalibration.Text = "Start";
-            this.btnStartCalibration.UseVisualStyleBackColor = true;
-            this.btnStartCalibration.Click += new System.EventHandler(this.btnStartCalibration_Click);
-            // 
-            // lblStatusMessage
-            // 
-            this.lblStatusMessage.AutoSize = true;
-            this.lblStatusMessage.Location = new System.Drawing.Point(36, 71);
-            this.lblStatusMessage.Name = "lblStatusMessage";
-            this.lblStatusMessage.Size = new System.Drawing.Size(0, 13);
-            this.lblStatusMessage.TabIndex = 32;
-            // 
-            // tbMesswert
-            // 
-            this.tbMesswert.Location = new System.Drawing.Point(39, 135);
-            this.tbMesswert.Name = "tbMesswert";
-            this.tbMesswert.Size = new System.Drawing.Size(68, 20);
-            this.tbMesswert.TabIndex = 31;
-            // 
-            // btnWertUebernehmen
-            // 
-            this.btnWertUebernehmen.Location = new System.Drawing.Point(125, 133);
-            this.btnWertUebernehmen.Name = "btnWertUebernehmen";
-            this.btnWertUebernehmen.Size = new System.Drawing.Size(110, 23);
-            this.btnWertUebernehmen.TabIndex = 30;
-            this.btnWertUebernehmen.Text = "Wert Übernehmen";
-            this.btnWertUebernehmen.UseVisualStyleBackColor = true;
-            this.btnWertUebernehmen.Click += new System.EventHandler(this.btnWertUebernehmen_Click);
-            // 
-            // lblNameCalibration
-            // 
-            this.lblNameCalibration.AutoSize = true;
-            this.lblNameCalibration.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNameCalibration.Location = new System.Drawing.Point(36, 9);
-            this.lblNameCalibration.Name = "lblNameCalibration";
-            this.lblNameCalibration.Size = new System.Drawing.Size(85, 18);
-            this.lblNameCalibration.TabIndex = 29;
-            this.lblNameCalibration.Text = "Kalibrierung";
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -2723,7 +2634,6 @@
             this.Controls.Add(this.pnlOuterBlue);
             this.Controls.Add(this.pnlInnerRed);
             this.Controls.Add(this.pnlInnerGreen);
-            this.Controls.Add(this.pnlCalibration);
             this.Controls.Add(this.btnUntersuchungAbbrechen);
             this.Controls.Add(this.btnUntersuchungStarten);
             this.Controls.Add(this.treeView1);
@@ -2750,8 +2660,6 @@
             this.pnlInnerCyan.PerformLayout();
             this.pnlOuterCyan.ResumeLayout(false);
             this.pnlOuterCyan.PerformLayout();
-            this.pnlCalibration.ResumeLayout(false);
-            this.pnlCalibration.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.pnlInnerRed.ResumeLayout(false);
@@ -2858,13 +2766,6 @@
         private System.Windows.Forms.Label lblSigFormIC;
         private System.Windows.Forms.ComboBox cbSigFormIC;
         private System.Windows.Forms.Button btnUntersuchungStarten;
-        private System.Windows.Forms.Panel pnlCalibration;
-        private System.Windows.Forms.Label lblNameCalibration;
-        private System.Windows.Forms.Label lblStatusMessage;
-        private System.Windows.Forms.TextBox tbMesswert;
-        private System.Windows.Forms.Button btnWertUebernehmen;
-        private System.Windows.Forms.Button btnStopCalibration;
-        private System.Windows.Forms.Button btnStartCalibration;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem dateiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem einstellungenToolStripMenuItem;
@@ -2909,7 +2810,6 @@
         private System.Windows.Forms.Label lblSigFormIR;
         private System.Windows.Forms.ComboBox cbSigFormIR;
         private System.Windows.Forms.ToolStripMenuItem optionenToolStripMenuItem;
-        public System.Windows.Forms.Label lblCalHinweis;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label lblIGMHMax;
         private System.Windows.Forms.Label label20;
