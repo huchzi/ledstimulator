@@ -600,15 +600,11 @@ namespace Light4SightNG
 
         }
 
-
-
-
-
-
-
-
-
-
+        private void StartCalibrationWindow_Click(object sender, EventArgs e)
+        {
+            Calibration calWindow = new Calibration();
+            calWindow.Show();
+        }
     }
 
 

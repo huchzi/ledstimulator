@@ -275,7 +275,7 @@ namespace Light4SightNG
 
         }
 
-        /*public static void KalibrierungsSignal(int Kanal, double Elongation)
+        public static void KalibrierungsSignal(int Kanal, double Elongation)
         {
             double dValue = 0.0;
             double dWinkel = 0.0;
@@ -290,126 +290,21 @@ namespace Light4SightNG
                 {
                     WriteToWaveContainer(zero, k, i);
                 }
-                
+
                 //******** Trägerfrequenzsignal für die Ausgabe berechnen *********
-                dValue = (double)((Elongation * 32767) * Math.Sin(dWinkel));	//Trägerfrequenz Elongation entsprechend der übergebenen amplitude berechnen
+                dValue = (double)((Elongation * 32700) * Math.Sin(dWinkel));	//Trägerfrequenz Elongation entsprechend der übergebenen amplitude berechnen
                 WriteToWaveContainer(dValue, Kanal, i);
 
                 dWinkel += 2 * Math.PI * clGlobals.TraegerFrequenz / clGlobals.AbtastFrequenz;
                 if (dWinkel > 2 * Math.PI)
                     dWinkel -= 2 * Math.PI;
 
-                int rest = 0;
-                for (rest = Kanal + 1; rest < 7; rest++)	//entsprechend dem übergebenen Kanal die dahinter befindlichen Kanäle mit 0 Werten füllen
+                for (int rest = Kanal + 1; rest < 7; rest++)	//entsprechend dem übergebenen Kanal die dahinter befindlichen Kanäle mit 0 Werten füllen
                 {
-                    WriteToWaveContainer(zero, Kanal, i);
+                    WriteToWaveContainer(zero, rest, i);
                 }
             }
 
-        }*/
-
-        public static void WriteCalChannel(int kanal, double Elongation)
-        {
-            switch (kanal)
-            {
-                case 0:
-                    {
-                        clGlobals.Kanal_1_IR = StandardSinus(Elongation);
-                        clGlobals.Kanal_2_IG = VoidSignal();
-                        clGlobals.Kanal_3_IB = VoidSignal();
-                        clGlobals.Kanal_4_IC = VoidSignal();
-                        clGlobals.Kanal_5_OR = VoidSignal();
-                        clGlobals.Kanal_6_OG = VoidSignal();
-                        clGlobals.Kanal_7_OB = VoidSignal();
-                        clGlobals.Kanal_8_OC = VoidSignal();
-                        break;
-                    }
-                case 1:
-                    {
-                        clGlobals.Kanal_1_IR = VoidSignal();
-                        clGlobals.Kanal_2_IG = StandardSinus(Elongation);
-                        clGlobals.Kanal_3_IB = VoidSignal();
-                        clGlobals.Kanal_4_IC = VoidSignal();
-                        clGlobals.Kanal_5_OR = VoidSignal();
-                        clGlobals.Kanal_6_OG = VoidSignal();
-                        clGlobals.Kanal_7_OB = VoidSignal();
-                        clGlobals.Kanal_8_OC = VoidSignal();
-                        break;
-                    }
-                case 2:
-                    {
-                        clGlobals.Kanal_1_IR = VoidSignal();
-                        clGlobals.Kanal_2_IG = VoidSignal();
-                        clGlobals.Kanal_3_IB = StandardSinus(Elongation);
-                        clGlobals.Kanal_4_IC = VoidSignal();
-                        clGlobals.Kanal_5_OR = VoidSignal();
-                        clGlobals.Kanal_6_OG = VoidSignal();
-                        clGlobals.Kanal_7_OB = VoidSignal();
-                        clGlobals.Kanal_8_OC = VoidSignal();
-                        break;
-                    }
-                case 3:
-                    {
-                        clGlobals.Kanal_1_IR = VoidSignal();
-                        clGlobals.Kanal_2_IG = VoidSignal();
-                        clGlobals.Kanal_3_IB = VoidSignal();
-                        clGlobals.Kanal_4_IC = StandardSinus(Elongation);
-                        clGlobals.Kanal_5_OR = VoidSignal();
-                        clGlobals.Kanal_6_OG = VoidSignal();
-                        clGlobals.Kanal_7_OB = VoidSignal();
-                        clGlobals.Kanal_8_OC = VoidSignal();
-                        break;
-                    }
-                case 4:
-                    {
-                        clGlobals.Kanal_1_IR = VoidSignal();
-                        clGlobals.Kanal_2_IG = VoidSignal();
-                        clGlobals.Kanal_3_IB = VoidSignal();
-                        clGlobals.Kanal_4_IC = VoidSignal();
-                        clGlobals.Kanal_5_OR = StandardSinus(Elongation);
-                        clGlobals.Kanal_6_OG = VoidSignal();
-                        clGlobals.Kanal_7_OB = VoidSignal();
-                        clGlobals.Kanal_8_OC = VoidSignal();
-                        break;
-                    }
-                case 5:
-                    {
-                        clGlobals.Kanal_1_IR = VoidSignal();
-                        clGlobals.Kanal_2_IG = VoidSignal();
-                        clGlobals.Kanal_3_IB = VoidSignal();
-                        clGlobals.Kanal_4_IC = VoidSignal();
-                        clGlobals.Kanal_5_OR = VoidSignal();
-                        clGlobals.Kanal_6_OG = StandardSinus(Elongation);
-                        clGlobals.Kanal_7_OB = VoidSignal();
-                        clGlobals.Kanal_8_OC = VoidSignal();
-                        break;
-                    }
-                case 6:
-                    {
-                        clGlobals.Kanal_1_IR = VoidSignal();
-                        clGlobals.Kanal_2_IG = VoidSignal();
-                        clGlobals.Kanal_3_IB = VoidSignal();
-                        clGlobals.Kanal_4_IC = VoidSignal();
-                        clGlobals.Kanal_5_OR = VoidSignal();
-                        clGlobals.Kanal_6_OG = VoidSignal();
-                        clGlobals.Kanal_7_OB = StandardSinus(Elongation);
-                        clGlobals.Kanal_8_OC = VoidSignal();
-                        break;
-                    }
-                case 7:
-                    {
-                        clGlobals.Kanal_1_IR = VoidSignal();
-                        clGlobals.Kanal_2_IG = VoidSignal();
-                        clGlobals.Kanal_3_IB = VoidSignal();
-                        clGlobals.Kanal_4_IC = VoidSignal();
-                        clGlobals.Kanal_5_OR = VoidSignal();
-                        clGlobals.Kanal_6_OG = VoidSignal();
-                        clGlobals.Kanal_7_OB = VoidSignal();
-                        clGlobals.Kanal_8_OC = StandardSinus(Elongation);
-                        break;
-                    }
-            }
-            ConcatChannels();
         }
 
         public static void CreateChannelArrays()
@@ -436,7 +331,7 @@ namespace Light4SightNG
             clGlobals.Kanal_8_OC = null;
         }
 
-        private static void ConcatChannels()
+        public static void ConcatChannels()
         {
             for (int i = 0; i <= (clGlobals.AbtastFrequenz - 1); i++)
             {

@@ -285,6 +285,7 @@
             this.btnLoadPreset = new System.Windows.Forms.Button();
             this.btnSavePreset = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.StartCalibrationWindow = new System.Windows.Forms.Button();
             this.pnlOuterRed.SuspendLayout();
             this.pnlOuterGreen.SuspendLayout();
             this.pnlOuterBlue.SuspendLayout();
@@ -2612,11 +2613,22 @@
             this.btnSavePreset.UseVisualStyleBackColor = true;
             this.btnSavePreset.Click += new System.EventHandler(this.btnSavePreset_Click);
             // 
+            // StartCalibrationWindow
+            // 
+            this.StartCalibrationWindow.Location = new System.Drawing.Point(352, 446);
+            this.StartCalibrationWindow.Name = "StartCalibrationWindow";
+            this.StartCalibrationWindow.Size = new System.Drawing.Size(75, 23);
+            this.StartCalibrationWindow.TabIndex = 18;
+            this.StartCalibrationWindow.Text = "Calibrate";
+            this.StartCalibrationWindow.UseVisualStyleBackColor = true;
+            this.StartCalibrationWindow.Click += new System.EventHandler(this.StartCalibrationWindow_Click);
+            // 
             // Light4SightNG
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 494);
+            this.Controls.Add(this.StartCalibrationWindow);
             this.Controls.Add(this.btnSavePreset);
             this.Controls.Add(this.btnLoadPreset);
             this.Controls.Add(this.tbUntersuchungsVerlauf);
@@ -2905,8 +2917,7 @@
         private System.Windows.Forms.Button btnLoadPreset;
         private System.Windows.Forms.Button btnSavePreset;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        
-
+        private System.Windows.Forms.Button StartCalibrationWindow;
     }
 }
 
