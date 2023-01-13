@@ -17,15 +17,6 @@ namespace Light4SightNG
 
         public static byte[] waveDaten;
 
-        public static double[] Kanal_1_IR;
-        public static double[] Kanal_2_IG;
-        public static double[] Kanal_3_IB;
-        public static double[] Kanal_4_IC;
-        public static double[] Kanal_5_OR;
-        public static double[] Kanal_6_OG;
-        public static double[] Kanal_7_OB;
-        public static double[] Kanal_8_OC;
-
         // private static string[] strSteigungTmp      = new string[8];
         // private static string[] strSchnittpunktTmp  = new string[8];
         private static string[] poly4Tmp = new string[8];

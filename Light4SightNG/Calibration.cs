@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -28,14 +22,14 @@ namespace Light4SightNG
             clAudioControl calAudio = new clAudioControl();
             for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j <= 100; j+= 10)
+                for (int j = 0; j <= 100; j += 10)
                 {
                     calAudio.InitWaveContainer();
                     clSignalGeneration.CalibrationSignal(i, j / 100.0);
                     calAudio.PlaySignal();
-                    Thread.Sleep(1000);
+                    Thread.Sleep(5000);
                     calAudio.StopSignal();
-                    Thread.Sleep(100);
+                    Thread.Sleep(2000);
                 }
             }
             Start.Enabled = true;
