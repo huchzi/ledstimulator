@@ -19,8 +19,6 @@ namespace Light4SightNG
         private Thread m_soundThread = null;
         private ThreadStart soundThreadStart = null;
 
-
-
         public clAudioControl()
         {
             SignalFormat = new SlimDX.Multimedia.WaveFormat();
