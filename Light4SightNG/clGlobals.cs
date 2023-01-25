@@ -19,6 +19,7 @@ namespace Light4SightNG
 
         // private static string[] strSteigungTmp      = new string[8];
         // private static string[] strSchnittpunktTmp  = new string[8];
+
         private static string[] poly4Tmp = new string[8];
         private static string[] poly3Tmp = new string[8];
         private static string[] poly2Tmp = new string[8];

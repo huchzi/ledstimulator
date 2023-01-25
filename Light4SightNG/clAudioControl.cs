@@ -44,19 +44,6 @@ namespace Light4SightNG
             }
         }
 
-        private bool ClearWaveContainer()
-        {
-            try
-            {
-                clGlobals.waveDaten = null;
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         public bool PlaySignal()
         {
             soundThreadStart = new ThreadStart(SoundPlayerThread);
@@ -77,6 +64,7 @@ namespace Light4SightNG
             WaveBuffer.AudioData = WaveMemStream;
             WaveBuffer.AudioBytes = clGlobals.BytesProSekunde;
             WaveBuffer.LoopCount = XAudio2.LoopInfinite;
+            // WaveBuffer.LoopCount = 1;
 
             WaveSourceVoice = new SourceVoice(AudioDevice, SignalFormat);
             WaveSourceVoice.SubmitSourceBuffer(WaveBuffer);
@@ -85,7 +73,6 @@ namespace Light4SightNG
 
             while (clGlobals.bPlaySignal)
             {
-
                 Thread.Sleep(10);
             }
 
@@ -109,10 +96,22 @@ namespace Light4SightNG
             }
         }
 
-        ~clAudioControl()
+        public void UpdateSignal()
         {
-            this.StopSignal();
+            WaveSourceVoice.Stop();
 
+            WaveMemStream = new MemoryStream(clGlobals.waveDaten);
+
+            WaveBuffer = new AudioBuffer();
+            WaveBuffer.Flags = BufferFlags.EndOfStream;
+            WaveBuffer.AudioData = WaveMemStream;
+            WaveBuffer.AudioBytes = clGlobals.BytesProSekunde;
+            WaveBuffer.LoopCount = XAudio2.LoopInfinite;
+
+            WaveSourceVoice = new SourceVoice(AudioDevice, SignalFormat);
+            WaveSourceVoice.SubmitSourceBuffer(WaveBuffer);
+
+            WaveSourceVoice.Start();
         }
 
         #region IDisposable Member

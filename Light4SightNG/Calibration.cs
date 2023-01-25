@@ -1,8 +1,7 @@
-﻿using System;
+﻿using SlimDX.DirectInput;
+using System;
 using System.Threading;
 using System.Windows.Forms;
-using SlimDX.DirectInput;
-using System.Collections.Generic;
 
 namespace Light4SightNG
 {
@@ -30,26 +29,15 @@ namespace Light4SightNG
             gamepad = new Joystick(dinput, gamepad_uid);
             gamepad.Acquire();
 
-            debugBox.AppendText("\n----\n");
-            // debugBox.AppendText(state.GetButtons());
-
-            foreach (bool b in gamepad.GetCurrentState().GetButtons())
-            {
-                debugBox.AppendText(b.ToString());
-                debugBox.AppendText(";");
-            }
-
-
-
-            numericUpDown1.Value = 50;
+            Brightness.Value = 50;
 
             brightAudio = new clAudioControl();
             brightAudio.InitWaveContainer();
-            clSignalGeneration.CalibrationSignal(1, (double) numericUpDown1.Value / 100.0);
+            clSignalGeneration.CalibrationSignal(1, (double)Brightness.Value / 100.0);
 
             brightAudio.PlaySignal();
 
-            backgroundWorker1.RunWorkerAsync();
+            PollJoystick.RunWorkerAsync();
 
 
         }
@@ -79,35 +67,38 @@ namespace Light4SightNG
 
         }
 
-        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void pollJoystick_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             while (true)
             {
-                if (gamepad.GetCurrentState().GetButtons()[3]) numericUpDown1.Invoke(new MethodInvoker(incNumeric));
-                if (gamepad.GetCurrentState().GetButtons()[1]) numericUpDown1.Invoke(new MethodInvoker(decNumeric));
+                if (gamepad.GetCurrentState().GetButtons()[3]) Brightness.Invoke(new MethodInvoker(incNumeric));
+                if (gamepad.GetCurrentState().GetButtons()[1]) Brightness.Invoke(new MethodInvoker(decNumeric));
                 Thread.Sleep(200);
             }
         }
 
         private void incNumeric()
         {
-            if (numericUpDown1.Value <= 90) numericUpDown1.Value += 10;
-            brightAudio.StopSignal();
-            Thread.Sleep(200);
-            brightAudio.InitWaveContainer();
-            clSignalGeneration.CalibrationSignal(1, (double)numericUpDown1.Value / 100.0);
-            brightAudio.PlaySignal();
+            if (Brightness.Value <= 90) Brightness.Value += 10;
+            clSignalGeneration.CalibrationSignal(1, (double)Brightness.Value / 100.0);
+            brightAudio.UpdateSignal();
 
         }
 
         private void decNumeric()
         {
-            if (numericUpDown1.Value >= 10) numericUpDown1.Value -= 10;
+            if (Brightness.Value >= 10) Brightness.Value -= 10;
+            clSignalGeneration.CalibrationSignal(1, (double)Brightness.Value / 100.0);
+            brightAudio.UpdateSignal();
+        }
+
+        private void Calibration_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            PollJoystick.Dispose();
+            gamepad.Dispose();
+            dinput = null;
             brightAudio.StopSignal();
-            Thread.Sleep(200);
-            brightAudio.InitWaveContainer();
-            clSignalGeneration.CalibrationSignal(1, (double)numericUpDown1.Value / 100.0);
-            brightAudio.PlaySignal();
+            brightAudio.Dispose();
         }
     }
 }

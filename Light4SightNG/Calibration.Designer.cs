@@ -30,9 +30,9 @@
         {
             this.Start = new System.Windows.Forms.Button();
             this.debugBox = new System.Windows.Forms.TextBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.Brightness = new System.Windows.Forms.NumericUpDown();
+            this.PollJoystick = new System.ComponentModel.BackgroundWorker();
+            ((System.ComponentModel.ISupportInitialize)(this.Brightness)).BeginInit();
             this.SuspendLayout();
             // 
             // Start
@@ -53,28 +53,29 @@
             this.debugBox.Size = new System.Drawing.Size(146, 105);
             this.debugBox.TabIndex = 1;
             // 
-            // numericUpDown1
+            // Brightness
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(69, 176);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown1.TabIndex = 2;
+            this.Brightness.Location = new System.Drawing.Point(69, 176);
+            this.Brightness.Name = "Brightness";
+            this.Brightness.Size = new System.Drawing.Size(120, 20);
+            this.Brightness.TabIndex = 2;
             // 
-            // backgroundWorker1
+            // PollJoystick
             // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.PollJoystick.DoWork += new System.ComponentModel.DoWorkEventHandler(this.pollJoystick_DoWork);
             // 
             // Calibration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(274, 301);
-            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.Brightness);
             this.Controls.Add(this.debugBox);
             this.Controls.Add(this.Start);
             this.Name = "Calibration";
             this.Text = "Calibration";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Calibration_FormClosed);
+            ((System.ComponentModel.ISupportInitialize)(this.Brightness)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -84,7 +85,7 @@
 
         private System.Windows.Forms.Button Start;
         private System.Windows.Forms.TextBox debugBox;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.NumericUpDown Brightness;
+        private System.ComponentModel.BackgroundWorker PollJoystick;
     }
 }
