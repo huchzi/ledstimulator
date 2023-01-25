@@ -21,12 +21,12 @@ namespace Light4SightNG
                     WriteToWaveContainer(zero, k, i);
                 }
 
-                //******** Trägerfrequenzsignal für die Ausgabe berechnen *********
+                //******** Calculate carrier frequency signal *********
                 dValue = (double)((Elongation * 32700) * Math.Sin(dWinkel));	//Trägerfrequenz Elongation entsprechend der übergebenen amplitude berechnen
                 WriteToWaveContainer(dValue, Kanal, i);
                 WriteToWaveContainer(dValue, Kanal + 4, i);
 
-                dWinkel += 2 * Math.PI * clGlobals.TraegerFrequenz / clGlobals.AbtastFrequenz;
+                dWinkel += 2 * Math.PI * clGlobals.CarrierFrequency / clGlobals.AbtastFrequenz;
                 if (dWinkel > 2 * Math.PI)
                     dWinkel -= 2 * Math.PI;
 
