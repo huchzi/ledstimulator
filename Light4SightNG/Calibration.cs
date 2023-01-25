@@ -12,9 +12,16 @@ namespace Light4SightNG
         DirectInput dinput;
         clAudioControl brightAudio;
 
+        double[] ratios;
+        int activeLED;
+
         public Calibration()
         {
             InitializeComponent();
+
+            activeLED = 0;
+            ratios = new double[] { 1.0, 1.0, 1.0, 1.0};
+
             dinput = new DirectInput();
             foreach (DeviceInstance di in dinput.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly))
             {
@@ -33,7 +40,7 @@ namespace Light4SightNG
 
             brightAudio = new clAudioControl();
             brightAudio.InitWaveContainer();
-            clSignalGeneration.CalibrationSignal(1, (double)Brightness.Value / 100.0);
+            clSignalGeneration.CalibrationSignal(activeLED, 1, 1);
 
             brightAudio.PlaySignal();
 
@@ -56,7 +63,7 @@ namespace Light4SightNG
                 for (int j = 0; j <= 100; j += 10)
                 {
                     calAudio.InitWaveContainer();
-                    clSignalGeneration.CalibrationSignal(i, j / 100.0);
+                    clSignalGeneration.CalibrationSignal(i, j / 100.0, j / 100.0);
                     calAudio.PlaySignal();
                     Thread.Sleep(5000);
                     calAudio.StopSignal();
@@ -71,24 +78,47 @@ namespace Light4SightNG
         {
             while (true)
             {
-                if (gamepad.GetCurrentState().GetButtons()[3]) Brightness.Invoke(new MethodInvoker(incNumeric));
-                if (gamepad.GetCurrentState().GetButtons()[1]) Brightness.Invoke(new MethodInvoker(decNumeric));
+                bool[] buttons = gamepad.GetCurrentState().GetButtons();
+
+                // change ratio
+                if (buttons[0]) Brightness.Invoke(new MethodInvoker(incRatio));
+                if (buttons[2]) Brightness.Invoke(new MethodInvoker(decRatio));
+                // change LED
+                if (buttons[3]) Brightness.Invoke(new MethodInvoker(incLED));
+                if (buttons[1]) Brightness.Invoke(new MethodInvoker(decLED));
                 Thread.Sleep(200);
             }
         }
 
-        private void incNumeric()
+        private void incRatio()
         {
-            if (Brightness.Value <= 90) Brightness.Value += 10;
-            clSignalGeneration.CalibrationSignal(1, (double)Brightness.Value / 100.0);
+            ratios[activeLED] += .05;
+            clSignalGeneration.CalibrationSignal(activeLED, (double)Brightness.Value / 100.0, 1);
             brightAudio.UpdateSignal();
 
         }
 
-        private void decNumeric()
+        private void decRatio()
         {
-            if (Brightness.Value >= 10) Brightness.Value -= 10;
-            clSignalGeneration.CalibrationSignal(1, (double)Brightness.Value / 100.0);
+            ratios[activeLED] -= .05;
+            clSignalGeneration.CalibrationSignal(activeLED, (double)Brightness.Value / 100.0, 1);
+            brightAudio.UpdateSignal();
+        }
+
+        private void incLED()
+        {
+            activeLED += 1;
+            if (activeLED == 4) activeLED = 0;
+            clSignalGeneration.CalibrationSignal(activeLED, (double)Brightness.Value / 100.0, 1);
+            brightAudio.UpdateSignal();
+
+        }
+
+        private void decLED()
+        {
+            activeLED -= 1;
+            if (activeLED == -1) activeLED = 3;
+            clSignalGeneration.CalibrationSignal(activeLED, (double)Brightness.Value / 100.0, 1);
             brightAudio.UpdateSignal();
         }
 
@@ -100,5 +130,6 @@ namespace Light4SightNG
             brightAudio.StopSignal();
             brightAudio.Dispose();
         }
+
     }
 }

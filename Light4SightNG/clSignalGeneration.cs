@@ -4,7 +4,7 @@ namespace Light4SightNG
     class clSignalGeneration
     {
 
-        public static void CalibrationSignal(int Kanal, double Elongation)
+        public static void CalibrationSignal(int Kanal, double ElongationOuter, double ElongationInner)
         {
             double dValue = 0.0;
             double dWinkel = 0.0;
@@ -22,8 +22,9 @@ namespace Light4SightNG
                 }
 
                 //******** Calculate carrier frequency signal *********
-                dValue = (double)((Elongation * 32700) * Math.Sin(dWinkel));	//Trägerfrequenz Elongation entsprechend der übergebenen amplitude berechnen
+                dValue = (double)((ElongationOuter * 32700) * Math.Sin(dWinkel));	//Trägerfrequenz Elongation entsprechend der übergebenen amplitude berechnen
                 WriteToWaveContainer(dValue, Kanal, i);
+                dValue = (double)((ElongationInner * 32700) * Math.Sin(dWinkel));	//Trägerfrequenz Elongation entsprechend der übergebenen amplitude berechnen
                 WriteToWaveContainer(dValue, Kanal + 4, i);
 
                 dWinkel += 2 * Math.PI * clGlobals.CarrierFrequency / clGlobals.AbtastFrequenz;
