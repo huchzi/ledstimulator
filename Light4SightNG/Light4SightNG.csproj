@@ -106,8 +106,6 @@
     <Compile Include="EventArgs\AbbruchEventArgs.cs" />
     <Compile Include="clAudioControl.cs" />
     <Compile Include="clGlobals.cs" />
-    <Compile Include="LogWriter.cs">
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Calibration.resx">
