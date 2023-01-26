@@ -18,6 +18,8 @@ namespace Light4SightNG
         double intensityOuter = 0.5;
         double intensityInner = 0.5;
 
+        int[] calLevels;
+
         public Calibration()
         {
             InitializeComponent();
@@ -28,22 +30,16 @@ namespace Light4SightNG
             dinput = new DirectInput();
             foreach (DeviceInstance di in dinput.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly))
             {
-                debugBox.AppendText(di.ProductGuid.ToString());
-                debugBox.AppendText(";");
-                debugBox.AppendText(di.ProductName);
-                debugBox.AppendText(";\n");
-
+                logBox.AppendText($"{di.ProductGuid.ToString()}\n{di.ProductName}\n\n".Replace("\n", Environment.NewLine));
                 if (di.ProductName == "Logitech Cordless RumblePad 2 USB") gamepad_uid = di.ProductGuid;
             }
 
             gamepad = new Joystick(dinput, gamepad_uid);
             gamepad.Acquire();
 
-            Brightness.Value = 50;
-
             brightAudio = new clAudioControl();
             brightAudio.InitWaveContainer();
-            CalculateIntensities(activeLED);
+            CalculateIntensities(activeLED, 0.5);
             clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
 
             brightAudio.PlaySignal();
@@ -58,36 +54,47 @@ namespace Light4SightNG
 
             Start.Enabled = false;
 
-            debugBox.Clear();
+            logBox.Clear();
 
-            foreach (double d in ratios)
-            {
-                debugBox.AppendText(d.ToString());
-                debugBox.AppendText("\n");
-            }
+            MessageBox.Show("You have 5s to turn off any light.");
+
+            logBox.AppendText($"Red: {ratios[0]}\nGreen: {ratios[1]}\nBlue: {ratios[2]}\nCyan: {ratios[3]}\n\n".Replace("\n", Environment.NewLine));
 
             brightAudio.StopSignal();
 
             // Give 5 sec for darkening the room
             Thread.Sleep(5000);
 
+            logBox.AppendText($"Calibration started: {System.DateTime.Now.ToString()}\n".Replace("\n", Environment.NewLine));
+
+            calLevels = new int[] {1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99, 100 };
+
             for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j <= 100; j += 10)
+
+                brightAudio.InitWaveContainer();
+                clSignalGeneration.CalibrationSignal(i, 0, 0);
+                brightAudio.PlaySignal();
+
+                foreach(int j in calLevels)
                 {
-                    brightAudio.InitWaveContainer();
-                    CalculateIntensities(i);
+                    CalculateIntensities(i, 1.0);
                     clSignalGeneration.CalibrationSignal(i, intensityOuter * j / 100.0, intensityInner * j / 100.0);
-                    brightAudio.PlaySignal();
-                    Thread.Sleep(5000);
-                    brightAudio.StopSignal();
-                    Thread.Sleep(2000);
+                    brightAudio.UpdateSignal();
+                    Thread.Sleep(6000);
                 }
+
+                brightAudio.StopSignal();
+                Thread.Sleep(2000);
             }
             Start.Enabled = true;
 
+            logBox.AppendText($"Calibration ended: {System.DateTime.Now.ToString()}\n".Replace("\n", Environment.NewLine));
+
+            Thread.Sleep(5000);
+
             brightAudio.InitWaveContainer();
-            CalculateIntensities(activeLED);
+            CalculateIntensities(activeLED, 0.5);
             clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
 
             brightAudio.PlaySignal();
@@ -101,11 +108,11 @@ namespace Light4SightNG
                 bool[] buttons = gamepad.GetCurrentState().GetButtons();
 
                 // change ratio
-                if (buttons[0]) Brightness.Invoke(new MethodInvoker(incRatio));
-                if (buttons[2]) Brightness.Invoke(new MethodInvoker(decRatio));
+                if (buttons[0]) this.Invoke(new MethodInvoker(incRatio));
+                if (buttons[2]) this.Invoke(new MethodInvoker(decRatio));
                 // change LED
-                if (buttons[3]) Brightness.Invoke(new MethodInvoker(incLED));
-                if (buttons[1]) Brightness.Invoke(new MethodInvoker(decLED));
+                if (buttons[3]) this.Invoke(new MethodInvoker(incLED));
+                if (buttons[1]) this.Invoke(new MethodInvoker(decLED));
                 Thread.Sleep(200);
             }
         }
@@ -113,7 +120,7 @@ namespace Light4SightNG
         private void incRatio()
         {
             ratios[activeLED] += .025;
-            CalculateIntensities(activeLED);
+            CalculateIntensities(activeLED, 0.5);
             clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
             brightAudio.UpdateSignal();
 
@@ -122,7 +129,7 @@ namespace Light4SightNG
         private void decRatio()
         {
             ratios[activeLED] -= .025;
-            CalculateIntensities(activeLED);
+            CalculateIntensities(activeLED, 0.5);
             clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
             brightAudio.UpdateSignal();
         }
@@ -131,7 +138,7 @@ namespace Light4SightNG
         {
             activeLED += 1;
             if (activeLED == 4) activeLED = 0;
-            CalculateIntensities(activeLED);
+            CalculateIntensities(activeLED, 0.5);
             clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
             brightAudio.UpdateSignal();
 
@@ -141,30 +148,31 @@ namespace Light4SightNG
         {
             activeLED -= 1;
             if (activeLED == -1) activeLED = 3;
-            CalculateIntensities(activeLED);
+            CalculateIntensities(activeLED, 0.5);
             clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
             brightAudio.UpdateSignal();
         }
 
         private void Calibration_FormClosed(object sender, FormClosedEventArgs e)
         {
+            PollJoystick.CancelAsync();
             PollJoystick.Dispose();
-            Thread.Sleep(200);
+            Thread.Sleep(500);
             gamepad.Dispose();
             dinput = null;
             brightAudio.StopSignal();
             brightAudio.Dispose();
         }
 
-        private void CalculateIntensities(int LED)
+        private void CalculateIntensities(int LED, double baseIntensity)
         {
-            intensityInner = 0.5;
-            intensityOuter = 0.5 + ratios[LED];
+            intensityInner = baseIntensity;
+            intensityOuter = baseIntensity * (1 + ratios[LED]);
 
             if (ratios[LED] > 0)
             {
-                intensityInner = 0.5 / intensityOuter;
-                intensityOuter = 0.5;
+                intensityInner = baseIntensity / (1 + ratios[LED]);
+                intensityOuter = baseIntensity;
             } 
 
         }
