@@ -56,14 +56,14 @@ namespace Light4SightNG
 
             logBox.Clear();
 
-            MessageBox.Show("You have 5s to turn off any light.");
+            MessageBox.Show("After pressing the button, calibration will start in 20 sec.");
 
             logBox.AppendText($"Red: {ratios[0]}\nGreen: {ratios[1]}\nBlue: {ratios[2]}\nCyan: {ratios[3]}\n\n".Replace("\n", Environment.NewLine));
 
             brightAudio.StopSignal();
 
             // Give 5 sec for darkening the room
-            Thread.Sleep(5000);
+            Thread.Sleep(20000);
 
             logBox.AppendText($"Calibration started: {System.DateTime.Now.ToString()}\n".Replace("\n", Environment.NewLine));
 
