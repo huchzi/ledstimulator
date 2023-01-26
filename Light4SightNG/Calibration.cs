@@ -56,11 +56,11 @@ namespace Light4SightNG
 
             logBox.Clear();
 
-            MessageBox.Show("After pressing the button, calibration will start in 20 sec.");
+            brightAudio.StopSignal();
 
             logBox.AppendText($"Red: {ratios[0]}\nGreen: {ratios[1]}\nBlue: {ratios[2]}\nCyan: {ratios[3]}\n\n".Replace("\n", Environment.NewLine));
 
-            brightAudio.StopSignal();
+            MessageBox.Show("Start recording. After pressing the button, calibration will start in 20 sec.");
 
             // Give 5 sec for darkening the room
             Thread.Sleep(20000);
@@ -81,11 +81,11 @@ namespace Light4SightNG
                     CalculateIntensities(i, 1.0);
                     clSignalGeneration.CalibrationSignal(i, intensityOuter * j / 100.0, intensityInner * j / 100.0);
                     brightAudio.UpdateSignal();
-                    Thread.Sleep(6000);
+                    Thread.Sleep(2000);
                 }
 
                 brightAudio.StopSignal();
-                Thread.Sleep(2000);
+                Thread.Sleep(500);
             }
             Start.Enabled = true;
 
