@@ -15,6 +15,9 @@ namespace Light4SightNG
         double[] ratios;
         int activeLED;
 
+        double intensityOuter = 1.0;
+        double intensityInner = 1.0;
+
         public Calibration()
         {
             InitializeComponent();
@@ -93,7 +96,8 @@ namespace Light4SightNG
         private void incRatio()
         {
             ratios[activeLED] += .05;
-            clSignalGeneration.CalibrationSignal(activeLED, (double)Brightness.Value / 100.0, 1);
+            CaclulateIntensities(activeLED);
+            clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
             brightAudio.UpdateSignal();
 
         }
@@ -101,7 +105,8 @@ namespace Light4SightNG
         private void decRatio()
         {
             ratios[activeLED] -= .05;
-            clSignalGeneration.CalibrationSignal(activeLED, (double)Brightness.Value / 100.0, 1);
+            CaclulateIntensities(activeLED);
+            clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
             brightAudio.UpdateSignal();
         }
 
@@ -109,7 +114,8 @@ namespace Light4SightNG
         {
             activeLED += 1;
             if (activeLED == 4) activeLED = 0;
-            clSignalGeneration.CalibrationSignal(activeLED, (double)Brightness.Value / 100.0, 1);
+            CaclulateIntensities(activeLED);
+            clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
             brightAudio.UpdateSignal();
 
         }
@@ -118,17 +124,32 @@ namespace Light4SightNG
         {
             activeLED -= 1;
             if (activeLED == -1) activeLED = 3;
-            clSignalGeneration.CalibrationSignal(activeLED, (double)Brightness.Value / 100.0, 1);
+            CaclulateIntensities(activeLED);
+            clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
             brightAudio.UpdateSignal();
         }
 
         private void Calibration_FormClosed(object sender, FormClosedEventArgs e)
         {
             PollJoystick.Dispose();
+            Thread.Sleep(200);
             gamepad.Dispose();
             dinput = null;
             brightAudio.StopSignal();
             brightAudio.Dispose();
+        }
+
+        private void CaclulateIntensities(int LED)
+        {
+            intensityInner = 1;
+            intensityOuter = 1 + ratios[LED];
+
+            if (ratios[LED] > 0)
+            {
+                intensityInner = 1 / intensityOuter;
+                intensityOuter = 1;
+            } 
+
         }
 
     }
