@@ -26,7 +26,7 @@ namespace Light4SightNG
             InitializeComponent();
 
             activeLED = 0;
-            ratios = new double[] { 1.0, 1.0, 1.0, 1.0};
+            ratios = new double[] { 0.0, 0.0, 0.0, 0.0};
             ledNames = new string[] { "Red", "Green", "Blue", "Cyan" };
 
             dinput = new DirectInput();
@@ -86,13 +86,15 @@ namespace Light4SightNG
                     CalculateIntensities(i, 1.0);
                     clSignalGeneration.CalibrationSignal(i, intensityOuter * j / 100.0, intensityInner * j / 100.0);
                     brightAudio.UpdateSignal();
-                    Thread.Sleep(2000);
+                    Thread.Sleep(4000);
                 }
 
-                brightAudio.StopSignal();
-                Thread.Sleep(500);
-
                 logBox.AppendText($"{ledNames[i]} ended: {System.DateTime.Now.ToString()}\n".Replace("\n", Environment.NewLine));
+
+                brightAudio.StopSignal();
+                Thread.Sleep(2000);
+
+
 
             }
             Start.Enabled = true;
