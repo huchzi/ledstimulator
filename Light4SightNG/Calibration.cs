@@ -91,6 +91,9 @@ namespace Light4SightNG
 
                 brightAudio.StopSignal();
                 Thread.Sleep(500);
+
+                logBox.AppendText($"{ledNames[i]} ended: {System.DateTime.Now.ToString()}\n".Replace("\n", Environment.NewLine));
+
             }
             Start.Enabled = true;
 
