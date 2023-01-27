@@ -19,6 +19,7 @@ namespace Light4SightNG
         double intensityInner = 0.5;
 
         int[] calLevels;
+        String[] ledNames;
 
         public Calibration()
         {
@@ -26,6 +27,7 @@ namespace Light4SightNG
 
             activeLED = 0;
             ratios = new double[] { 1.0, 1.0, 1.0, 1.0};
+            ledNames = new string[] { "Red", "Green", "Blue", "Cyan" };
 
             dinput = new DirectInput();
             foreach (DeviceInstance di in dinput.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly))
@@ -76,7 +78,10 @@ namespace Light4SightNG
                 clSignalGeneration.CalibrationSignal(i, 0, 0);
                 brightAudio.PlaySignal();
 
-                foreach(int j in calLevels)
+                logBox.AppendText($"{ledNames[i]} started: {System.DateTime.Now.ToString()}\n".Replace("\n", Environment.NewLine));
+
+
+                foreach (int j in calLevels)
                 {
                     CalculateIntensities(i, 1.0);
                     clSignalGeneration.CalibrationSignal(i, intensityOuter * j / 100.0, intensityInner * j / 100.0);
