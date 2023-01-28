@@ -56,11 +56,19 @@ namespace Light4SightNG
 
             Start.Enabled = false;
 
-            logBox.Clear();
-
             brightAudio.StopSignal();
 
-            logBox.AppendText($"Red: {ratios[0]}\nGreen: {ratios[1]}\nBlue: {ratios[2]}\nCyan: {ratios[3]}\n\n".Replace("\n", Environment.NewLine));
+            logBox.Clear();
+
+            logBox.AppendText("Calibrating person: \n");
+            logBox.AppendText("Filters: \n");
+            logBox.AppendText("Name of ILT output file: \n\n");
+
+            logBox.AppendText(
+                $"Red: {ratios[0]}\n" +
+                $"Green: {ratios[1]}\n" +
+                $"Blue: {ratios[2]}\n" +
+                $"Cyan: {ratios[3]}\n\n".Replace("\n", Environment.NewLine));
 
             MessageBox.Show("Start recording. After pressing the button, calibration will start in 20 sec.");
 
@@ -68,6 +76,7 @@ namespace Light4SightNG
             Thread.Sleep(20000);
 
             logBox.AppendText($"Calibration started: {System.DateTime.Now.ToString()}\n".Replace("\n", Environment.NewLine));
+            logBox.AppendText("LED;intensity_level;start;end");
 
             calLevels = new int[] {1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99, 100 };
 
@@ -78,25 +87,22 @@ namespace Light4SightNG
                 clSignalGeneration.CalibrationSignal(i, 0, 0);
                 brightAudio.PlaySignal();
 
-                logBox.AppendText($"{ledNames[i]} started: {System.DateTime.Now.ToString()}\n".Replace("\n", Environment.NewLine));
-
-
                 foreach (int j in calLevels)
                 {
                     CalculateIntensities(i, 1.0);
                     clSignalGeneration.CalibrationSignal(i, intensityOuter * j / 100.0, intensityInner * j / 100.0);
                     brightAudio.UpdateSignal();
-                    Thread.Sleep(4000);
+                    Thread.Sleep(250);
+                    String start = System.DateTime.Now.ToString("hh.mm.ss.ffffff");
+                    Thread.Sleep(3500);
+                    logBox.AppendText($"{ledNames[i]};{j.ToString()};{start};{System.DateTime.Now.ToString("hh.mm.ss.ffffff")}");
+                    Thread.Sleep(250);
                 }
-
-                logBox.AppendText($"{ledNames[i]} ended: {System.DateTime.Now.ToString()}\n".Replace("\n", Environment.NewLine));
 
                 brightAudio.StopSignal();
                 Thread.Sleep(2000);
-
-
-
             }
+
             Start.Enabled = true;
 
             logBox.AppendText($"Calibration ended: {System.DateTime.Now.ToString()}\n".Replace("\n", Environment.NewLine));
