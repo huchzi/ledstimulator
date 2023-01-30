@@ -30,11 +30,24 @@ namespace Light4SightNG
             ledNames = new string[] { "Red", "Green", "Blue", "Cyan" };
 
             dinput = new DirectInput();
-            foreach (DeviceInstance di in dinput.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly))
+
+            bool foundPad = false;
+            while (!foundPad)
             {
-                logBox.AppendText($"{di.ProductGuid.ToString()}\n{di.ProductName}\n\n".Replace("\n", Environment.NewLine));
-                if (di.ProductName == "Logitech Cordless RumblePad 2 USB") gamepad_uid = di.ProductGuid;
+                foreach (DeviceInstance di in dinput.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly))
+                {
+                    logBox.AppendText($"{di.ProductGuid.ToString()}\n{di.ProductName}\n\n".Replace("\n", Environment.NewLine));
+                    if (di.ProductName == "Logitech Cordless RumblePad 2 USB")
+                    {
+                        gamepad_uid = di.ProductGuid;
+                        foundPad = true;
+                    }
+                }
+
+                if (!foundPad) MessageBox.Show("No Gampad detected. Please make sure that it is plugged in!");
+
             }
+
 
             gamepad = new Joystick(dinput, gamepad_uid);
             gamepad.Acquire();
@@ -65,9 +78,9 @@ namespace Light4SightNG
             logBox.AppendText("Name of ILT output file: \n\n");
 
             logBox.AppendText(
-                $"Red: {ratios[0]}\n" +
-                $"Green: {ratios[1]}\n" +
-                $"Blue: {ratios[2]}\n" +
+                $"Red: {ratios[0]}\n".Replace("\n", Environment.NewLine) +
+                $"Green: {ratios[1]}\n".Replace("\n", Environment.NewLine) +
+                $"Blue: {ratios[2]}\n".Replace("\n", Environment.NewLine) +
                 $"Cyan: {ratios[3]}\n\n".Replace("\n", Environment.NewLine));
 
             MessageBox.Show("Start recording. After pressing the button, calibration will start in 20 sec.");
@@ -76,7 +89,7 @@ namespace Light4SightNG
             Thread.Sleep(20000);
 
             logBox.AppendText($"Calibration started: {System.DateTime.Now.ToString()}\n".Replace("\n", Environment.NewLine));
-            logBox.AppendText("LED;intensity_level;start;end");
+            logBox.AppendText("LED;intensity_level;start;end\n");
 
             calLevels = new int[] {1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99, 100 };
 
@@ -92,11 +105,11 @@ namespace Light4SightNG
                     CalculateIntensities(i, 1.0);
                     clSignalGeneration.CalibrationSignal(i, intensityOuter * j / 100.0, intensityInner * j / 100.0);
                     brightAudio.UpdateSignal();
-                    Thread.Sleep(250);
-                    String start = System.DateTime.Now.ToString("hh.mm.ss.ffffff");
-                    Thread.Sleep(3500);
-                    logBox.AppendText($"{ledNames[i]};{j.ToString()};{start};{System.DateTime.Now.ToString("hh.mm.ss.ffffff")}");
-                    Thread.Sleep(250);
+                    Thread.Sleep(1000);
+                    String start = System.DateTime.Now.ToString("HH.mm.ss.ffffff");
+                    Thread.Sleep(4000);
+                    logBox.AppendText($"{ledNames[i]};{j.ToString()};{start};{System.DateTime.Now.ToString("HH.mm.ss.ffffff")}\n".Replace("\n", Environment.NewLine));
+                    Thread.Sleep(1000);
                 }
 
                 brightAudio.StopSignal();
