@@ -27,7 +27,7 @@ namespace Light4SightNG
 
             activeLED = 0;
             ratios = new double[] { 0.0, 0.0, 0.0, 0.0};
-            ledNames = new string[] { "Red", "Green", "Blue", "Cyan" };
+            ledNames = new string[] { "Red", "Green", "Blue", "Cyan"};
 
             dinput = new DirectInput();
 
@@ -113,7 +113,15 @@ namespace Light4SightNG
                 }
 
                 brightAudio.StopSignal();
-                Thread.Sleep(2000);
+                Thread.Sleep(1000);
+
+                if (i < 3)
+                {
+                    MessageBox.Show($"Next LED: {ledNames[i + 1]}. Please adjust constant.");
+                } else
+                {
+                    MessageBox.Show("Calibration finished. Please stop recording.");
+                }
             }
 
             Start.Enabled = true;

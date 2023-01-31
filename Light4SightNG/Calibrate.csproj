@@ -8,8 +8,8 @@
     <ProjectGuid>{47431519-64C7-41E0-A393-111C0ACF0FC1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Light4SightNG</RootNamespace>
-    <AssemblyName>Light4SightNG</AssemblyName>
+    <RootNamespace>CalibrateLEDStimulator</RootNamespace>
+    <AssemblyName>CalibrateLEDStimulator</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -42,7 +42,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Light4SightNG.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\CalibrateLEDStimulator.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
