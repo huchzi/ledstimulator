@@ -140,7 +140,7 @@ namespace Light4SightNG
 
         private void pollJoystick_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            while (true)
+            while (!PollJoystick.CancellationPending)
             {
                 bool[] buttons = gamepad.GetCurrentState().GetButtons();
 
@@ -193,6 +193,7 @@ namespace Light4SightNG
         private void Calibration_FormClosed(object sender, FormClosedEventArgs e)
         {
             PollJoystick.CancelAsync();
+            Thread.Sleep(500);
             PollJoystick.Dispose();
             Thread.Sleep(500);
             gamepad.Dispose();
