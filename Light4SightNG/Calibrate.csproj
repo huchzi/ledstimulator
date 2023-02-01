@@ -47,11 +47,12 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>C:\Dokumente und Einstellungen\Light4sight\Desktop\Light4Sight_release\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\_Data\NewCalibration\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>Light4SightNG.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Light4SightNG.Program</StartupObject>

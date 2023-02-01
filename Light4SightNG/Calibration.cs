@@ -59,6 +59,7 @@ namespace Light4SightNG
 
             brightAudio.PlaySignal();
 
+            PollJoystick.WorkerSupportsCancellation = true;
             PollJoystick.RunWorkerAsync();
 
 
@@ -193,7 +194,7 @@ namespace Light4SightNG
         private void Calibration_FormClosed(object sender, FormClosedEventArgs e)
         {
             PollJoystick.CancelAsync();
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
             PollJoystick.Dispose();
             Thread.Sleep(500);
             gamepad.Dispose();
