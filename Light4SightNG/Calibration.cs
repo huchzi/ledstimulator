@@ -114,15 +114,8 @@ namespace Light4SightNG
                 }
 
                 brightAudio.StopSignal();
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
 
-                if (i < 3)
-                {
-                    MessageBox.Show($"Next LED: {ledNames[i + 1]}. Please adjust constant.");
-                } else
-                {
-                    MessageBox.Show("Calibration finished. Please stop recording.");
-                }
             }
 
             Start.Enabled = true;
