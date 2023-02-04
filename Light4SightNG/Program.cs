@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Light4SightNG
+namespace CalibrateLEDStimulator
 {
     static class Program
     {

@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Light4SightNG
+namespace CalibrateLEDStimulator
 {
     public partial class Calibration : Form
     {
@@ -12,22 +12,16 @@ namespace Light4SightNG
         DirectInput dinput;
         clAudioControl brightAudio;
 
-        double[] ratios;
-        int activeLED;
+        OneColor myLEDs = new OneColor();
 
-        double intensityOuter = 0.5;
-        double intensityInner = 0.5;
-
-        int[] calLevels;
-        String[] ledNames;
+        readonly int[] calLevels = { 1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99, 100 };
+        readonly String[] ledNames = { "Red", "Green", "Blue", "Cyan" };
 
         public Calibration()
         {
             InitializeComponent();
 
-            activeLED = 0;
-            ratios = new double[] { 0.0, 0.0, 0.0, 0.0};
-            ledNames = new string[] { "Red", "Green", "Blue", "Cyan"};
+            myLEDs = new OneColor();
 
             dinput = new DirectInput();
 
@@ -54,15 +48,11 @@ namespace Light4SightNG
 
             brightAudio = new clAudioControl();
             brightAudio.InitWaveContainer();
-            CalculateIntensities(activeLED, 0.5);
-            clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
-
+            clSignalGeneration.CalibrationSignal(myLEDs);
             brightAudio.PlaySignal();
 
             PollJoystick.WorkerSupportsCancellation = true;
             PollJoystick.RunWorkerAsync();
-
-
         }
 
         private void StartCalibration_Click(object sender, EventArgs e)
@@ -70,7 +60,9 @@ namespace Light4SightNG
 
             Start.Enabled = false;
 
-            brightAudio.StopSignal();
+            // turn off LEDs
+            myLEDs.BaseIntensity = 0;
+            brightAudio.UpdateSignal(myLEDs);
 
             logBox.Clear();
 
@@ -79,56 +71,55 @@ namespace Light4SightNG
             logBox.AppendText("Name of ILT output file: \n\n");
 
             logBox.AppendText(
-                $"Red: {ratios[0]}\n".Replace("\n", Environment.NewLine) +
-                $"Green: {ratios[1]}\n".Replace("\n", Environment.NewLine) +
-                $"Blue: {ratios[2]}\n".Replace("\n", Environment.NewLine) +
-                $"Cyan: {ratios[3]}\n\n".Replace("\n", Environment.NewLine));
+                $"Red: {myLEDs.RatioRED}{Environment.NewLine}" +
+                $"Green: {myLEDs.RatioGREEN}{Environment.NewLine}" +
+                $"Blue: {myLEDs.RatioBLUE}{Environment.NewLine}" +
+                $"Cyan: {myLEDs.RatioCYAN}{Environment.NewLine}{Environment.NewLine}");
 
             MessageBox.Show("Start recording. After pressing the button, calibration will start in 20 sec.");
 
             // Give 5 sec for darkening the room
             Thread.Sleep(20000);
 
-            logBox.AppendText($"Calibration started: {System.DateTime.Now.ToString()}\n".Replace("\n", Environment.NewLine));
+            logBox.AppendText($"Calibration started: {System.DateTime.Now}{Environment.NewLine}");
             logBox.AppendText("LED;intensity_level;start;end\n");
 
-            calLevels = new int[] {1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99, 100 };
+            myLEDs.BaseIntensity = 1.0;
 
-            for (int i = 0; i < 4; i++)
+            foreach (var LED in ledNames)
             {
-
-                brightAudio.InitWaveContainer();
-                clSignalGeneration.CalibrationSignal(i, 0, 0);
-                brightAudio.PlaySignal();
+                myLEDs.SetActiveLED = LED;
 
                 foreach (int j in calLevels)
                 {
-                    CalculateIntensities(i, 1.0);
-                    clSignalGeneration.CalibrationSignal(i, intensityOuter * j / 100.0, intensityInner * j / 100.0);
+                    clSignalGeneration.CalibrationSignal(
+                        myLEDs.ActiveLED,
+                        myLEDs.IntensityOuter * j / 100.0,
+                        myLEDs.IntensityInner * j / 100.0
+                        );
                     brightAudio.UpdateSignal();
                     Thread.Sleep(1000);
                     String start = System.DateTime.Now.ToString("HH.mm.ss.ffffff");
                     Thread.Sleep(4000);
-                    logBox.AppendText($"{ledNames[i]};{j.ToString()};{start};{System.DateTime.Now.ToString("HH.mm.ss.ffffff")}\n".Replace("\n", Environment.NewLine));
+                    String end = System.DateTime.Now.ToString("HH.mm.ss.ffffff");
+                    logBox.AppendText($"{LED};{j};{start};{end}{Environment.NewLine}");
                     Thread.Sleep(1000);
                 }
 
-                brightAudio.StopSignal();
-                Thread.Sleep(2000);
+                myLEDs.BaseIntensity = 0;
+                brightAudio.UpdateSignal(myLEDs);
 
+                Thread.Sleep(2000);
             }
 
             Start.Enabled = true;
 
-            logBox.AppendText($"Calibration ended: {System.DateTime.Now.ToString()}\n".Replace("\n", Environment.NewLine));
+            logBox.AppendText($"Calibration ended: {System.DateTime.Now}{Environment.NewLine}");
 
             Thread.Sleep(5000);
 
-            brightAudio.InitWaveContainer();
-            CalculateIntensities(activeLED, 0.5);
-            clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
-
-            brightAudio.PlaySignal();
+            myLEDs.BaseIntensity = 0.5;
+            brightAudio.UpdateSignal(myLEDs);
 
         }
 
@@ -150,38 +141,28 @@ namespace Light4SightNG
 
         private void incRatio()
         {
-            ratios[activeLED] += .025;
-            CalculateIntensities(activeLED, 0.5);
-            clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
-            brightAudio.UpdateSignal();
+            myLEDs.incrementRatio();
+            brightAudio.UpdateSignal(myLEDs);
 
         }
 
         private void decRatio()
         {
-            ratios[activeLED] -= .025;
-            CalculateIntensities(activeLED, 0.5);
-            clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
-            brightAudio.UpdateSignal();
+            myLEDs.decrementRatio();
+            brightAudio.UpdateSignal(myLEDs);
         }
 
         private void incLED()
         {
-            activeLED += 1;
-            if (activeLED == 4) activeLED = 0;
-            CalculateIntensities(activeLED, 0.5);
-            clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
-            brightAudio.UpdateSignal();
+            myLEDs.NextLED();
+            brightAudio.UpdateSignal(myLEDs);
 
         }
 
         private void decLED()
         {
-            activeLED -= 1;
-            if (activeLED == -1) activeLED = 3;
-            CalculateIntensities(activeLED, 0.5);
-            clSignalGeneration.CalibrationSignal(activeLED, intensityOuter, intensityInner);
-            brightAudio.UpdateSignal();
+            myLEDs.PreviousLED();
+            brightAudio.UpdateSignal(myLEDs);
         }
 
         private void Calibration_FormClosed(object sender, FormClosedEventArgs e)
@@ -193,20 +174,8 @@ namespace Light4SightNG
             gamepad.Dispose();
             dinput = null;
             brightAudio.StopSignal();
+            Thread.Sleep(500);
             brightAudio.Dispose();
-        }
-
-        private void CalculateIntensities(int LED, double baseIntensity)
-        {
-            intensityInner = baseIntensity;
-            intensityOuter = baseIntensity * (1 + ratios[LED]);
-
-            if (ratios[LED] > 0)
-            {
-                intensityInner = baseIntensity / (1 + ratios[LED]);
-                intensityOuter = baseIntensity;
-            } 
-
         }
 
     }
