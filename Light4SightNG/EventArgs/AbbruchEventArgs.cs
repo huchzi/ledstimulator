@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Light4SightNG
+namespace CalibrateLEDStimulator
 {
     class AbbruchEventArgs : EventArgs
     {

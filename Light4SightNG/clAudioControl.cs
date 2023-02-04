@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading;
 
 
-namespace Light4SightNG
+namespace CalibrateLEDStimulator
 {
     internal class clAudioControl : IDisposable
     {
@@ -112,6 +112,12 @@ namespace Light4SightNG
             WaveSourceVoice.SubmitSourceBuffer(WaveBuffer);
 
             WaveSourceVoice.Start();
+        }
+
+        public void UpdateSignal(OneColor LEDs)
+        {
+            clSignalGeneration.CalibrationSignal(LEDs);
+            this.UpdateSignal();
         }
 
         #region IDisposable Member

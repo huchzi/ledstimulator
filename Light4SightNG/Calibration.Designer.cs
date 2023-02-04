@@ -1,4 +1,4 @@
-﻿namespace Light4SightNG
+﻿namespace CalibrateLEDStimulator
 {
     partial class Calibration
     {

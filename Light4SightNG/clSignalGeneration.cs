@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Light4SightNG
+namespace CalibrateLEDStimulator
 {
     class clSignalGeneration
     {
@@ -33,6 +33,11 @@ namespace Light4SightNG
 
             }
 
+        }
+
+        public static void CalibrationSignal(OneColor LEDs)
+        {
+            CalibrationSignal(LEDs.ActiveLED, LEDs.IntensityOuter, LEDs.IntensityInner);
         }
 
         private static void WriteToWaveContainer(double dValue, int iChannel, int iPosition)

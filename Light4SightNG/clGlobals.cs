@@ -2,8 +2,7 @@
 using System.IO;
 
 
-
-namespace Light4SightNG
+namespace CalibrateLEDStimulator
 {
     internal static class clGlobals
     {
