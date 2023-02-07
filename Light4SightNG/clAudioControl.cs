@@ -114,9 +114,9 @@ namespace CalibrateLEDStimulator
             WaveSourceVoice.Start();
         }
 
-        public void UpdateSignal(OneColor LEDs)
+        public void UpdateSignal(ColorMatch LEDs)
         {
-            clSignalGeneration.CalibrationSignal(LEDs);
+            clSignalGeneration.CalibrationSignal(LEDs.SettingsLED);
             this.UpdateSignal();
         }
 

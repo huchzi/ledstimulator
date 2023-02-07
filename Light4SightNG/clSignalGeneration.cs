@@ -4,7 +4,7 @@ namespace CalibrateLEDStimulator
     class clSignalGeneration
     {
 
-        public static void CalibrationSignal(int Kanal, double ElongationOuter, double ElongationInner)
+        public static void CalibrationSignal(double[] LEDs)
         {
             double dValue = 0.0;
             double dWinkel = 0.0;
@@ -18,14 +18,9 @@ namespace CalibrateLEDStimulator
                 // fill all channels with 0 first
                 for (k = 0; k < 8; k++)
                 {
-                    WriteToWaveContainer(zero, k, i);
+                    dValue = (double)((LEDs[k] * 32700) * Math.Sin(dWinkel));   //Trägerfrequenz Elongation entsprechend der übergebenen amplitude berechnen
+                    WriteToWaveContainer(dValue, k, i);
                 }
-
-                //******** Calculate carrier frequency signal *********
-                dValue = (double)((ElongationOuter * 32700) * Math.Sin(dWinkel));	//Trägerfrequenz Elongation entsprechend der übergebenen amplitude berechnen
-                WriteToWaveContainer(dValue, Kanal, i);
-                dValue = (double)((ElongationInner * 32700) * Math.Sin(dWinkel));	//Trägerfrequenz Elongation entsprechend der übergebenen amplitude berechnen
-                WriteToWaveContainer(dValue, Kanal + 4, i);
 
                 dWinkel += 2 * Math.PI * clGlobals.CarrierFrequency / clGlobals.AbtastFrequenz;
                 if (dWinkel > 2 * Math.PI)
@@ -33,11 +28,6 @@ namespace CalibrateLEDStimulator
 
             }
 
-        }
-
-        public static void CalibrationSignal(OneColor LEDs)
-        {
-            CalibrationSignal(LEDs.ActiveLED, LEDs.IntensityOuter, LEDs.IntensityInner);
         }
 
         private static void WriteToWaveContainer(double dValue, int iChannel, int iPosition)

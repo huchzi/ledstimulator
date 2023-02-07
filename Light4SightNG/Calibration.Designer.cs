@@ -28,26 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Start = new System.Windows.Forms.Button();
             this.logBox = new System.Windows.Forms.TextBox();
             this.PollJoystick = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
-            // Start
-            // 
-            this.Start.Location = new System.Drawing.Point(12, 12);
-            this.Start.Name = "Start";
-            this.Start.Size = new System.Drawing.Size(75, 23);
-            this.Start.TabIndex = 0;
-            this.Start.Text = "Start Calibration";
-            this.Start.UseVisualStyleBackColor = true;
-            this.Start.Click += new System.EventHandler(this.StartCalibration_Click);
-            // 
-            // debugBox
+            // logBox
             // 
             this.logBox.Location = new System.Drawing.Point(12, 41);
             this.logBox.Multiline = true;
-            this.logBox.Name = "debugBox";
+            this.logBox.Name = "logBox";
             this.logBox.Size = new System.Drawing.Size(481, 248);
             this.logBox.TabIndex = 1;
             // 
@@ -61,7 +50,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(505, 301);
             this.Controls.Add(this.logBox);
-            this.Controls.Add(this.Start);
             this.Name = "Calibration";
             this.Text = "Calibration";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Calibration_FormClosed);
@@ -71,8 +59,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button Start;
         private System.Windows.Forms.TextBox logBox;
         private System.ComponentModel.BackgroundWorker PollJoystick;
     }

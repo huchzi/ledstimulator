@@ -12,7 +12,7 @@ namespace CalibrateLEDStimulator
         DirectInput dinput;
         clAudioControl brightAudio;
 
-        OneColor myLEDs = new OneColor();
+        ColorMatch myLEDs = new ColorMatch();
 
         readonly int[] calLevels = { 1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99, 100 };
         readonly String[] ledNames = { "Red", "Green", "Blue", "Cyan" };
@@ -21,7 +21,7 @@ namespace CalibrateLEDStimulator
         {
             InitializeComponent();
 
-            myLEDs = new OneColor();
+            myLEDs = new ColorMatch();
 
             dinput = new DirectInput();
 
@@ -48,79 +48,11 @@ namespace CalibrateLEDStimulator
 
             brightAudio = new clAudioControl();
             brightAudio.InitWaveContainer();
-            clSignalGeneration.CalibrationSignal(myLEDs);
+            clSignalGeneration.CalibrationSignal(myLEDs.SettingsLED);
             brightAudio.PlaySignal();
 
             PollJoystick.WorkerSupportsCancellation = true;
             PollJoystick.RunWorkerAsync();
-        }
-
-        private void StartCalibration_Click(object sender, EventArgs e)
-        {
-
-            Start.Enabled = false;
-
-            // turn off LEDs
-            myLEDs.BaseIntensity = 0;
-            brightAudio.UpdateSignal(myLEDs);
-
-            logBox.Clear();
-
-            logBox.AppendText("Calibrating person: \n");
-            logBox.AppendText("Filters: \n");
-            logBox.AppendText("Name of ILT output file: \n\n");
-
-            logBox.AppendText(
-                $"Red: {myLEDs.RatioRED}{Environment.NewLine}" +
-                $"Green: {myLEDs.RatioGREEN}{Environment.NewLine}" +
-                $"Blue: {myLEDs.RatioBLUE}{Environment.NewLine}" +
-                $"Cyan: {myLEDs.RatioCYAN}{Environment.NewLine}{Environment.NewLine}");
-
-            MessageBox.Show("Start recording. After pressing the button, calibration will start in 20 sec.");
-
-            // Give 5 sec for darkening the room
-            Thread.Sleep(20000);
-
-            logBox.AppendText($"Calibration started: {System.DateTime.Now}{Environment.NewLine}");
-            logBox.AppendText("LED;intensity_level;start;end\n");
-
-            myLEDs.BaseIntensity = 1.0;
-
-            foreach (var LED in ledNames)
-            {
-                myLEDs.SetActiveLED = LED;
-
-                foreach (int j in calLevels)
-                {
-                    clSignalGeneration.CalibrationSignal(
-                        myLEDs.ActiveLED,
-                        myLEDs.IntensityOuter * j / 100.0,
-                        myLEDs.IntensityInner * j / 100.0
-                        );
-                    brightAudio.UpdateSignal();
-                    Thread.Sleep(1000);
-                    String start = System.DateTime.Now.ToString("HH.mm.ss.ffffff");
-                    Thread.Sleep(4000);
-                    String end = System.DateTime.Now.ToString("HH.mm.ss.ffffff");
-                    logBox.AppendText($"{LED};{j};{start};{end}{Environment.NewLine}");
-                    Thread.Sleep(1000);
-                }
-
-                myLEDs.BaseIntensity = 0;
-                brightAudio.UpdateSignal(myLEDs);
-
-                Thread.Sleep(2000);
-            }
-
-            Start.Enabled = true;
-
-            logBox.AppendText($"Calibration ended: {System.DateTime.Now}{Environment.NewLine}");
-
-            Thread.Sleep(5000);
-
-            myLEDs.BaseIntensity = 0.5;
-            brightAudio.UpdateSignal(myLEDs);
-
         }
 
         private void pollJoystick_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -129,39 +61,61 @@ namespace CalibrateLEDStimulator
             {
                 bool[] buttons = gamepad.GetCurrentState().GetButtons();
 
-                // change ratio
+                // change Red/Cyan
                 if (buttons[0]) this.Invoke(new MethodInvoker(incRatio));
                 if (buttons[2]) this.Invoke(new MethodInvoker(decRatio));
-                // change LED
+                // change Green/Blue
                 if (buttons[3]) this.Invoke(new MethodInvoker(incLED));
                 if (buttons[1]) this.Invoke(new MethodInvoker(decLED));
+                // change Luminances
+                if (buttons[5]) this.Invoke(new MethodInvoker(incLum));
+                if (buttons[4]) this.Invoke(new MethodInvoker(decLum));
+                // get values
+                if (buttons[6]) this.Invoke(new MethodInvoker(getValues));
                 Thread.Sleep(200);
             }
         }
 
+        private void getValues()
+        {
+            logBox.AppendText($"Red to Cyan: {myLEDs.RatioRedCyan}{Environment.NewLine}Green/Blue: {myLEDs.RatioGreenBlue}{Environment.NewLine}Intensities: {myLEDs.RatioLuminance}{Environment.NewLine}");
+        }
+
+        private void incLum()
+        {
+            myLEDs.incrementRedCyan();
+            brightAudio.UpdateSignal(myLEDs);
+        }
+
+        private void decLum()
+        {
+            myLEDs.incrementGreenBlue();
+            brightAudio.UpdateSignal(myLEDs);
+        }
+
         private void incRatio()
         {
-            myLEDs.incrementRatio();
+            myLEDs.incrementRed();
             brightAudio.UpdateSignal(myLEDs);
 
         }
 
         private void decRatio()
         {
-            myLEDs.decrementRatio();
+            myLEDs.incrementCyan();
             brightAudio.UpdateSignal(myLEDs);
         }
 
         private void incLED()
         {
-            myLEDs.NextLED();
+            myLEDs.incrementGreen();
             brightAudio.UpdateSignal(myLEDs);
 
         }
 
         private void decLED()
         {
-            myLEDs.PreviousLED();
+            myLEDs.incrementBlue();
             brightAudio.UpdateSignal(myLEDs);
         }
 
