@@ -103,7 +103,6 @@
     <Compile Include="AudioControlClass.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="ChannelDescription.cs" />
-    <Compile Include="TesteChannels.cs" />
     <Compile Include="StdStrategie.cs" />
     <Compile Include="ZeigeErgebnis.cs">
       <SubType>Form</SubType>
