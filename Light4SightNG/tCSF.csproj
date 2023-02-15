@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Light4SightNG</RootNamespace>
-    <AssemblyName>Light4SightNG</AssemblyName>
+    <AssemblyName>MesseFSKurven</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -42,50 +42,52 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Light4SightNG.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\MesseFSKurven.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>C:\Dokumente und Einstellungen\Light4sight\Desktop\Light4Sight_release\</OutputPath>
+    <OutputPath>..\..\..\..\..\MesseFSKurven\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>Light4SightNG.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Light4SightNG.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Eye-icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\Light4SightNG.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\MesseFSKurven.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
+    <OutputPath>..\..\..\..\_tCSF\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>Light4SightNG.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <DocumentationFile>..\..\..\..\_tCSF\MesseFSKurven.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SlimDX, Version=2.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -97,34 +99,53 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalibrationData.cs" />
     <Compile Include="EventArgs\AbbruchEventArgs.cs" />
-    <Compile Include="clAudioControl.cs" />
-    <Compile Include="clCalibration.cs" />
-    <Compile Include="clGlobals.cs" />
-    <Compile Include="clSignalDescription.cs" />
-    <Compile Include="clTestChannels.cs" />
-    <Compile Include="Light4SightNG.cs">
+    <Compile Include="AudioControlClass.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="ChannelDescription.cs" />
+    <Compile Include="TesteChannels.cs" />
+    <Compile Include="StdStrategie.cs" />
+    <Compile Include="ZeigeErgebnis.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Light4SightNG.designer.cs">
-      <DependentUpon>Light4SightNG.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Startfenster.cs">
+    <Compile Include="ZeigeErgebnis.Designer_1.cs">
+      <DependentUpon>ZeigeErgebnis.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Startfenster.Designer.cs">
-      <DependentUpon>Startfenster.cs</DependentUpon>
+    <Compile Include="MesseSchwellen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MesseSchwellen.Designer.cs">
+      <DependentUpon>MesseSchwellen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Steuerung.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Steuerung.Designer.cs">
+      <DependentUpon>Steuerung.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KontrolliereMessungen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KontrolliereMessungen.Designer.cs">
+      <DependentUpon>KontrolliereMessungen.cs</DependentUpon>
     </Compile>
     <Compile Include="LogWriter.cs">
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StdStrategie.cs" />
-    <EmbeddedResource Include="Light4SightNG.resx">
-      <DependentUpon>Light4SightNG.cs</DependentUpon>
+    <EmbeddedResource Include="zeigeErgebnis.resx">
+      <DependentUpon>ZeigeErgebnis.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Startfenster.resx">
-      <DependentUpon>Startfenster.cs</DependentUpon>
+    <EmbeddedResource Include="MesseSchwellen.resx">
+      <DependentUpon>MesseSchwellen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Steuerung.resx">
+      <DependentUpon>Steuerung.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KontrolliereMessungen.resx">
+      <DependentUpon>KontrolliereMessungen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -146,7 +167,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="clSignalGeneration.cs" />
+    <Compile Include="SignalGeneration.cs" />
+    <Compile Include="Teststrategie.cs" />
+    <Compile Include="BestPEST.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -172,6 +195,20 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="IWshRuntimeLibrary">
+      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Eye-icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

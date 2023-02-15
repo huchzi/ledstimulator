@@ -1,6 +1,6 @@
 ﻿namespace Light4SightNG
 {
-    partial class Light4SightNG
+    partial class KontrolliereMessungen
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -257,6 +257,11 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.btnLoadPreset = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.showEnvFreq = new System.Windows.Forms.TextBox();
+            this.showEnvPause = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.pnlOuterRed.SuspendLayout();
             this.pnlOuterGreen.SuspendLayout();
             this.pnlOuterBlue.SuspendLayout();
@@ -298,7 +303,7 @@
             this.pnlOuterRed.Controls.Add(this.lblSigFormOR);
             this.pnlOuterRed.Controls.Add(this.cbSigFormOR);
             this.pnlOuterRed.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pnlOuterRed.Location = new System.Drawing.Point(413, 267);
+            this.pnlOuterRed.Location = new System.Drawing.Point(35, 3);
             this.pnlOuterRed.Name = "pnlOuterRed";
             this.pnlOuterRed.Size = new System.Drawing.Size(64, 51);
             this.pnlOuterRed.TabIndex = 3;
@@ -830,7 +835,7 @@
             this.pnlOuterBlue.Controls.Add(this.lblFreqOB);
             this.pnlOuterBlue.Controls.Add(this.lblSigFormOB);
             this.pnlOuterBlue.Controls.Add(this.cbSigFormOB);
-            this.pnlOuterBlue.Location = new System.Drawing.Point(336, 261);
+            this.pnlOuterBlue.Location = new System.Drawing.Point(0, 14);
             this.pnlOuterBlue.Name = "pnlOuterBlue";
             this.pnlOuterBlue.Size = new System.Drawing.Size(64, 36);
             this.pnlOuterBlue.TabIndex = 4;
@@ -1096,7 +1101,7 @@
             this.pnlInnerGreen.Controls.Add(this.lblFreqIG);
             this.pnlInnerGreen.Controls.Add(this.lblSigFormIG);
             this.pnlInnerGreen.Controls.Add(this.cbSigFormIG);
-            this.pnlInnerGreen.Location = new System.Drawing.Point(360, 387);
+            this.pnlInnerGreen.Location = new System.Drawing.Point(11, 13);
             this.pnlInnerGreen.Name = "pnlInnerGreen";
             this.pnlInnerGreen.Size = new System.Drawing.Size(33, 26);
             this.pnlInnerGreen.TabIndex = 4;
@@ -1360,7 +1365,7 @@
             this.pnlInnerBlue.Controls.Add(this.lblFreqIB);
             this.pnlInnerBlue.Controls.Add(this.lblSigFormIB);
             this.pnlInnerBlue.Controls.Add(this.cbSigFormIB);
-            this.pnlInnerBlue.Location = new System.Drawing.Point(336, 312);
+            this.pnlInnerBlue.Location = new System.Drawing.Point(3, 8);
             this.pnlInnerBlue.Name = "pnlInnerBlue";
             this.pnlInnerBlue.Size = new System.Drawing.Size(64, 43);
             this.pnlInnerBlue.TabIndex = 4;
@@ -1624,7 +1629,7 @@
             this.pnlInnerCyan.Controls.Add(this.lblFreqIC);
             this.pnlInnerCyan.Controls.Add(this.lblSigFormIC);
             this.pnlInnerCyan.Controls.Add(this.cbSigFormIC);
-            this.pnlInnerCyan.Location = new System.Drawing.Point(412, 203);
+            this.pnlInnerCyan.Location = new System.Drawing.Point(63, 0);
             this.pnlInnerCyan.Name = "pnlInnerCyan";
             this.pnlInnerCyan.Size = new System.Drawing.Size(71, 51);
             this.pnlInnerCyan.TabIndex = 4;
@@ -1869,6 +1874,7 @@
             this.pnlOuterCyan.Controls.Add(this.tbOCSC1DeltaK);
             this.pnlOuterCyan.Controls.Add(this.label78);
             this.pnlOuterCyan.Controls.Add(this.label79);
+            this.pnlOuterCyan.Controls.Add(this.pnlInnerGreen);
             this.pnlOuterCyan.Controls.Add(this.label80);
             this.pnlOuterCyan.Controls.Add(this.label81);
             this.pnlOuterCyan.Controls.Add(this.label82);
@@ -1889,7 +1895,7 @@
             this.pnlOuterCyan.Controls.Add(this.lblFreqOC);
             this.pnlOuterCyan.Controls.Add(this.lblSigFormOC);
             this.pnlOuterCyan.Controls.Add(this.cbSigFormOC);
-            this.pnlOuterCyan.Location = new System.Drawing.Point(421, 325);
+            this.pnlOuterCyan.Location = new System.Drawing.Point(13, 5);
             this.pnlOuterCyan.Name = "pnlOuterCyan";
             this.pnlOuterCyan.Size = new System.Drawing.Size(79, 75);
             this.pnlOuterCyan.TabIndex = 4;
@@ -2171,9 +2177,14 @@
             this.pnlInnerRed.Controls.Add(this.label31);
             this.pnlInnerRed.Controls.Add(this.pnlOuterGreen);
             this.pnlInnerRed.Controls.Add(this.label30);
+            this.pnlInnerRed.Controls.Add(this.pnlOuterCyan);
             this.pnlInnerRed.Controls.Add(this.label29);
             this.pnlInnerRed.Controls.Add(this.label28);
+            this.pnlInnerRed.Controls.Add(this.pnlInnerBlue);
+            this.pnlInnerRed.Controls.Add(this.pnlOuterRed);
             this.pnlInnerRed.Controls.Add(this.label27);
+            this.pnlInnerRed.Controls.Add(this.pnlInnerCyan);
+            this.pnlInnerRed.Controls.Add(this.pnlOuterBlue);
             this.pnlInnerRed.Controls.Add(this.lblIRMHMax);
             this.pnlInnerRed.Controls.Add(this.label19);
             this.pnlInnerRed.Controls.Add(this.label10);
@@ -2191,7 +2202,7 @@
             this.pnlInnerRed.Controls.Add(this.lblFreqIR);
             this.pnlInnerRed.Controls.Add(this.lblSigFormIR);
             this.pnlInnerRed.Controls.Add(this.cbSigFormIR);
-            this.pnlInnerRed.Location = new System.Drawing.Point(336, 202);
+            this.pnlInnerRed.Location = new System.Drawing.Point(609, 50);
             this.pnlInnerRed.Name = "pnlInnerRed";
             this.pnlInnerRed.Size = new System.Drawing.Size(64, 43);
             this.pnlInnerRed.TabIndex = 13;
@@ -2505,32 +2516,71 @@
             this.btnLoadPreset.UseVisualStyleBackColor = true;
             this.btnLoadPreset.Click += new System.EventHandler(this.btnLoadPreset_Click);
             // 
-            // Light4SightNG
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(0, 0);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 17;
+            // 
+            // showEnvFreq
+            // 
+            this.showEnvFreq.Location = new System.Drawing.Point(298, 258);
+            this.showEnvFreq.Name = "showEnvFreq";
+            this.showEnvFreq.Size = new System.Drawing.Size(100, 20);
+            this.showEnvFreq.TabIndex = 18;
+            // 
+            // showEnvPause
+            // 
+            this.showEnvPause.Location = new System.Drawing.Point(298, 308);
+            this.showEnvPause.Name = "showEnvPause";
+            this.showEnvPause.Size = new System.Drawing.Size(100, 20);
+            this.showEnvPause.TabIndex = 19;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(302, 243);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(99, 13);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "Envelope Frequenz";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(301, 294);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(85, 13);
+            this.label2.TabIndex = 21;
+            this.label2.Text = "Pause Envelope";
+            // 
+            // KontrolliereMessungen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(546, 494);
+            this.ClientSize = new System.Drawing.Size(768, 494);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.showEnvPause);
+            this.Controls.Add(this.showEnvFreq);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.btnLoadPreset);
             this.Controls.Add(this.gbProband);
             this.Controls.Add(this.tbUntersuchungsVerlauf);
             this.Controls.Add(this.lblL4SDatum);
-            this.Controls.Add(this.pnlOuterCyan);
-            this.Controls.Add(this.pnlInnerGreen);
-            this.Controls.Add(this.pnlOuterRed);
-            this.Controls.Add(this.pnlInnerCyan);
-            this.Controls.Add(this.pnlInnerBlue);
-            this.Controls.Add(this.pnlOuterBlue);
             this.Controls.Add(this.pnlInnerRed);
             this.Controls.Add(this.btnUntersuchungAbbrechen);
             this.Controls.Add(this.btnUntersuchungStarten);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = "Light4SightNG";
+            this.Name = "KontrolliereMessungen";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Determine CFF";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Light4SightNG_FormClosing);
+            this.Load += new System.EventHandler(this.Light4SightNG_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Light4SightNG_KeyDown);
             this.pnlOuterRed.ResumeLayout(false);
             this.pnlOuterRed.PerformLayout();
@@ -2786,6 +2836,11 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button btnLoadPreset;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox showEnvFreq;
+        private System.Windows.Forms.TextBox showEnvPause;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
         
 
     }

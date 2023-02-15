@@ -11,76 +11,80 @@ using System.Windows.Forms;
 
 namespace Light4SightNG
 {
-    public partial class Light4SightNG : Form
+    public partial class KontrolliereMessungen : Form
     {
         //Kanalobjekkte erzeugen
-        public static clSignalDescription IRChannel = new clSignalDescription();
-        public static clSignalDescription IGChannel = new clSignalDescription();
-        public static clSignalDescription IBChannel = new clSignalDescription();
-        public static clSignalDescription ICChannel = new clSignalDescription();
-        public static clSignalDescription ORChannel = new clSignalDescription();
-        public static clSignalDescription OGChannel = new clSignalDescription();
-        public static clSignalDescription OBChannel = new clSignalDescription();
-        public static clSignalDescription OCChannel = new clSignalDescription();
+        public static ChannelDescription IRChannel = new ChannelDescription();
+        public static ChannelDescription IGChannel = new ChannelDescription();
+        public static ChannelDescription IBChannel = new ChannelDescription();
+        public static ChannelDescription ICChannel = new ChannelDescription();
+        public static ChannelDescription ORChannel = new ChannelDescription();
+        public static ChannelDescription OGChannel = new ChannelDescription();
+        public static ChannelDescription OBChannel = new ChannelDescription();
+        public static ChannelDescription OCChannel = new ChannelDescription();
 
         public static int cff;
 
         public bool testeCFF = false;
 
+        public bool UseBestPEST;
+
         public int freq = -1;
 
-        private StdStrategie stdStrategie;
+        StdStrategie stdStrategie;
+        BestPEST Strategie;
 
-        private List<clSignalDescription> channels = new List<clSignalDescription>();
-                
-        //Objekt für die Audioschnittstelle. Dient der Steuerung der Wiedergabe(Start,Stop,Puffer)
-        private clAudioControl AudioControl = new clAudioControl();
+        List<ChannelDescription> channels = new List<ChannelDescription>();
 
-        //private Thread m_CalHinweisThread = null;
+        Steuerung mainProgram;
 
         //Objekte für Logging und Debugging
-        
+
         public LogWriter logfiletmp;//Wird durch die Funktion LogFile an die Namenskonvention von DebugFile angepasst
         //public LogWriter DebugFile = new LogWriter("debugdata.txt", true);
 
-        public Light4SightNG()
+        public KontrolliereMessungen(Steuerung gpObject)
         {
+
+            this.mainProgram = gpObject;
+            UseBestPEST = mainProgram.UseBestPEST;
+
             InitializeComponent();
 
             #region Kalibrierung einlesen und MaxWerte berechnen/anzeigen
-            if (clGlobals.KalibrierungsdatenLesen() == 0)
+            if (Globals.ReadCalibrationData() == 0)
             {
-                this.lblIRMHMax.Text = clGlobals.dMaxMH(0).ToString();
-                IRChannel.MaxMHCal = clGlobals.dMaxMH(0);
-                IRChannel.ParameterPolynom(clGlobals.poly4(0), clGlobals.poly3(0), clGlobals.poly2(0), clGlobals.poly1(0), clGlobals.intercept(0));
+                this.lblIRMHMax.Text = Globals.dMaxMH(0).ToString();
+                IRChannel.MaxMHCal = Globals.dMaxMH(0);
+                IRChannel.ParameterPolynom(Globals.poly4(0), Globals.poly3(0), Globals.poly2(0), Globals.poly1(0), Globals.intercept(0));
 
-                this.lblIGMHMax.Text = clGlobals.dMaxMH(1).ToString();
-                IGChannel.MaxMHCal = clGlobals.dMaxMH(1);
-                IGChannel.ParameterPolynom(clGlobals.poly4(1), clGlobals.poly3(1), clGlobals.poly2(1), clGlobals.poly1(1), clGlobals.intercept(1));
+                this.lblIGMHMax.Text = Globals.dMaxMH(1).ToString();
+                IGChannel.MaxMHCal = Globals.dMaxMH(1);
+                IGChannel.ParameterPolynom(Globals.poly4(1), Globals.poly3(1), Globals.poly2(1), Globals.poly1(1), Globals.intercept(1));
 
-                this.lblIBMHMax.Text = clGlobals.dMaxMH(2).ToString();
-                IBChannel.MaxMHCal = clGlobals.dMaxMH(2);
-                IBChannel.ParameterPolynom(clGlobals.poly4(2), clGlobals.poly3(2), clGlobals.poly2(2), clGlobals.poly1(2), clGlobals.intercept(2));
+                this.lblIBMHMax.Text = Globals.dMaxMH(2).ToString();
+                IBChannel.MaxMHCal = Globals.dMaxMH(2);
+                IBChannel.ParameterPolynom(Globals.poly4(2), Globals.poly3(2), Globals.poly2(2), Globals.poly1(2), Globals.intercept(2));
 
-                this.lblICMHMax.Text = clGlobals.dMaxMH(3).ToString();
-                ICChannel.MaxMHCal = clGlobals.dMaxMH(3);
-                ICChannel.ParameterPolynom(clGlobals.poly4(3), clGlobals.poly3(3), clGlobals.poly2(3), clGlobals.poly1(3), clGlobals.intercept(3));
+                this.lblICMHMax.Text = Globals.dMaxMH(3).ToString();
+                ICChannel.MaxMHCal = Globals.dMaxMH(3);
+                ICChannel.ParameterPolynom(Globals.poly4(3), Globals.poly3(3), Globals.poly2(3), Globals.poly1(3), Globals.intercept(3));
 
-                this.lblORMHMax.Text = clGlobals.dMaxMH(4).ToString();
-                ORChannel.MaxMHCal = clGlobals.dMaxMH(4);
-                ORChannel.ParameterPolynom(clGlobals.poly4(4), clGlobals.poly3(4), clGlobals.poly2(4), clGlobals.poly1(4), clGlobals.intercept(4));
+                this.lblORMHMax.Text = Globals.dMaxMH(4).ToString();
+                ORChannel.MaxMHCal = Globals.dMaxMH(4);
+                ORChannel.ParameterPolynom(Globals.poly4(4), Globals.poly3(4), Globals.poly2(4), Globals.poly1(4), Globals.intercept(4));
 
-                this.lblOGMHMax.Text = clGlobals.dMaxMH(5).ToString();
-                OGChannel.MaxMHCal = clGlobals.dMaxMH(5);
-                OGChannel.ParameterPolynom(clGlobals.poly4(5), clGlobals.poly3(5), clGlobals.poly2(5), clGlobals.poly1(5), clGlobals.intercept(5));
+                this.lblOGMHMax.Text = Globals.dMaxMH(5).ToString();
+                OGChannel.MaxMHCal = Globals.dMaxMH(5);
+                OGChannel.ParameterPolynom(Globals.poly4(5), Globals.poly3(5), Globals.poly2(5), Globals.poly1(5), Globals.intercept(5));
 
-                this.lblOBMHMax.Text = clGlobals.dMaxMH(6).ToString();
-                OBChannel.MaxMHCal = clGlobals.dMaxMH(6);
-                OBChannel.ParameterPolynom(clGlobals.poly4(6), clGlobals.poly3(6), clGlobals.poly2(6), clGlobals.poly1(6), clGlobals.intercept(6));
+                this.lblOBMHMax.Text = Globals.dMaxMH(6).ToString();
+                OBChannel.MaxMHCal = Globals.dMaxMH(6);
+                OBChannel.ParameterPolynom(Globals.poly4(6), Globals.poly3(6), Globals.poly2(6), Globals.poly1(6), Globals.intercept(6));
 
-                this.lblOCMHMax.Text = clGlobals.dMaxMH(7).ToString();
-                OCChannel.MaxMHCal = clGlobals.dMaxMH(7);
-                OCChannel.ParameterPolynom(clGlobals.poly4(7), clGlobals.poly3(7), clGlobals.poly2(7), clGlobals.poly1(7), clGlobals.intercept(7));
+                this.lblOCMHMax.Text = Globals.dMaxMH(7).ToString();
+                OCChannel.MaxMHCal = Globals.dMaxMH(7);
+                OCChannel.ParameterPolynom(Globals.poly4(7), Globals.poly3(7), Globals.poly2(7), Globals.poly1(7), Globals.intercept(7));
             }
             else
             {
@@ -110,6 +114,9 @@ namespace Light4SightNG
             this.btnUntersuchungStartenActive(true);
 
             this.KeyPreview = true;
+
+            this.showEnvFreq.Text = SignalGeneration.Envelope;
+            this.showEnvPause.Text = SignalGeneration.PauseEnvelope.ToString();
         }
 
         public void ShowDialog(String Probandennummer, String Augenseite, String Presets)
@@ -119,12 +126,14 @@ namespace Light4SightNG
             this.btnLoadPreset_Click(this, null, Presets);
             this.btnUntersuchungStarten_Click(this, null);
             this.prepareLogFile();
+            if (UseBestPEST) Strategie.StarteStrategie();
+            else stdStrategie.StartStdStrategie();
             this.ShowDialog();
         }
 
         public void LogFile(string text, bool header)
         {
-            if (clGlobals.flagDebugLog == true)
+            if (Globals.flagDebugLog == true)
             {
                 logfiletmp.add(text);
                 //DebugFile.add("LOGFILE: " + logfiletmp.add(text));
@@ -140,23 +149,26 @@ namespace Light4SightNG
             }
         }
 
-        private void prepareLogFile()
+        void prepareLogFile()
         {
             string line2, line3, line4, line5, line6, line7, line8, line9, line10;
             LogFile(";;Centerfield;;;;;Surroundfield;;", true);
             LogFile(";;R;G;B;C;;R;G;B;C;", true);
 
-            if (Light4SightNG.IRChannel.SignalAktiv == true)
+            LogFile("Frequenz Envelope;;" + SignalGeneration.Envelope, true);
+            LogFile("Pausiere Envelope;;" + Convert.ToString(SignalGeneration.PauseEnvelope), true);
+
+            if (KontrolliereMessungen.IRChannel.SignalAktiv == true)
             {
-                line2 = ("Signal aktiv;;" + Light4SightNG.IRChannel.SignalAktiv.ToString() + ";");
-                line3 = ("Signalform;;" + Light4SightNG.IRChannel.Signalform + ";");
-                line4 = ("Helligkeit;;" + Light4SightNG.IRChannel.MittlereHelligkeit_cdm2.ToString() + ";");
-                line5 = ("Frequenz;;" + Light4SightNG.IRChannel.Frequenz.ToString() + ";");
-                line6 = ("Phase;;" + Light4SightNG.IRChannel.Phasenverschiebung.ToString() + ";");
-                line7 = ("Kontrast SC1;;" + Light4SightNG.IRChannel.KonSC1_100.ToString() + ";");
-                line8 = ("Kontrast SC2;;" + Light4SightNG.IRChannel.KonSC2_100.ToString() + ";");
-                line9 = ("Delta Kontrast SC1;;" + Light4SightNG.IRChannel.SC1DeltaK_100.ToString() + ";");
-                line10 = ("Delta Kontrast SC2;;" + Light4SightNG.IRChannel.SC2DeltaK_100.ToString() + ";");
+                line2 = ("Signal aktiv;;" + KontrolliereMessungen.IRChannel.SignalAktiv.ToString() + ";");
+                line3 = ("Signalform;;" + KontrolliereMessungen.IRChannel.Signalform + ";");
+                line4 = ("Helligkeit;;" + KontrolliereMessungen.IRChannel.MittlereHelligkeit_cdm2.ToString() + ";");
+                line5 = ("Frequenz;;" + KontrolliereMessungen.IRChannel.Frequenz.ToString() + ";");
+                line6 = ("Phase;;" + KontrolliereMessungen.IRChannel.Phasenverschiebung.ToString() + ";");
+                line7 = ("Kontrast SC1;;" + KontrolliereMessungen.IRChannel.KonSC1_100.ToString() + ";");
+                line8 = ("Kontrast SC2;;" + KontrolliereMessungen.IRChannel.KonSC2_100.ToString() + ";");
+                line9 = ("Delta Kontrast SC1;;" + KontrolliereMessungen.IRChannel.SC1DeltaK_100.ToString() + ";");
+                line10 = ("Delta Kontrast SC2;;" + KontrolliereMessungen.IRChannel.SC2DeltaK_100.ToString() + ";");
             }
             else
             {
@@ -171,17 +183,17 @@ namespace Light4SightNG
                 line10 = ("Delta Kontrast SC2;;;");
             }
 
-            if (Light4SightNG.IGChannel.SignalAktiv == true)
+            if (KontrolliereMessungen.IGChannel.SignalAktiv == true)
             {
-                line2 = (line2 + Light4SightNG.IGChannel.SignalAktiv.ToString() + ";");
-                line3 = (line3 + Light4SightNG.IGChannel.Signalform + ";");
-                line4 = (line4 + Light4SightNG.IGChannel.MittlereHelligkeit_cdm2.ToString() + ";");
-                line5 = (line5 + Light4SightNG.IGChannel.Frequenz.ToString() + ";");
-                line6 = (line6 + Light4SightNG.IGChannel.Phasenverschiebung.ToString() + ";");
-                line7 = (line7 + Light4SightNG.IGChannel.KonSC1_100.ToString() + ";");
-                line8 = (line8 + Light4SightNG.IGChannel.KonSC2_100.ToString() + ";");
-                line9 = (line9 + Light4SightNG.IGChannel.SC1DeltaK_100.ToString() + ";");
-                line10 = (line10 + Light4SightNG.IGChannel.SC2DeltaK_100.ToString() + ";");
+                line2 = (line2 + KontrolliereMessungen.IGChannel.SignalAktiv.ToString() + ";");
+                line3 = (line3 + KontrolliereMessungen.IGChannel.Signalform + ";");
+                line4 = (line4 + KontrolliereMessungen.IGChannel.MittlereHelligkeit_cdm2.ToString() + ";");
+                line5 = (line5 + KontrolliereMessungen.IGChannel.Frequenz.ToString() + ";");
+                line6 = (line6 + KontrolliereMessungen.IGChannel.Phasenverschiebung.ToString() + ";");
+                line7 = (line7 + KontrolliereMessungen.IGChannel.KonSC1_100.ToString() + ";");
+                line8 = (line8 + KontrolliereMessungen.IGChannel.KonSC2_100.ToString() + ";");
+                line9 = (line9 + KontrolliereMessungen.IGChannel.SC1DeltaK_100.ToString() + ";");
+                line10 = (line10 + KontrolliereMessungen.IGChannel.SC2DeltaK_100.ToString() + ";");
             }
             else
             {
@@ -197,17 +209,17 @@ namespace Light4SightNG
             }
 
 
-            if (Light4SightNG.IBChannel.SignalAktiv == true)
+            if (KontrolliereMessungen.IBChannel.SignalAktiv == true)
             {
-                line2 = (line2 + Light4SightNG.IBChannel.SignalAktiv.ToString() + ";");
-                line3 = (line3 + Light4SightNG.IBChannel.Signalform + ";");
-                line4 = (line4 + Light4SightNG.IBChannel.MittlereHelligkeit_cdm2.ToString() + ";");
-                line5 = (line5 + Light4SightNG.IBChannel.Frequenz.ToString() + ";");
-                line6 = (line6 + Light4SightNG.IBChannel.Phasenverschiebung.ToString() + ";");
-                line7 = (line7 + Light4SightNG.IBChannel.KonSC1_100.ToString() + ";");
-                line8 = (line8 + Light4SightNG.IBChannel.KonSC2_100.ToString() + ";");
-                line9 = (line9 + Light4SightNG.IBChannel.SC1DeltaK_100.ToString() + ";");
-                line10 = (line10 + Light4SightNG.IBChannel.SC2DeltaK_100.ToString() + ";");
+                line2 = (line2 + KontrolliereMessungen.IBChannel.SignalAktiv.ToString() + ";");
+                line3 = (line3 + KontrolliereMessungen.IBChannel.Signalform + ";");
+                line4 = (line4 + KontrolliereMessungen.IBChannel.MittlereHelligkeit_cdm2.ToString() + ";");
+                line5 = (line5 + KontrolliereMessungen.IBChannel.Frequenz.ToString() + ";");
+                line6 = (line6 + KontrolliereMessungen.IBChannel.Phasenverschiebung.ToString() + ";");
+                line7 = (line7 + KontrolliereMessungen.IBChannel.KonSC1_100.ToString() + ";");
+                line8 = (line8 + KontrolliereMessungen.IBChannel.KonSC2_100.ToString() + ";");
+                line9 = (line9 + KontrolliereMessungen.IBChannel.SC1DeltaK_100.ToString() + ";");
+                line10 = (line10 + KontrolliereMessungen.IBChannel.SC2DeltaK_100.ToString() + ";");
             }
             else
             {
@@ -222,17 +234,17 @@ namespace Light4SightNG
                 line10 = (line10 + ";");
             }
 
-            if (Light4SightNG.ICChannel.SignalAktiv == true)
+            if (KontrolliereMessungen.ICChannel.SignalAktiv == true)
             {
-                line2 = (line2 + Light4SightNG.ICChannel.SignalAktiv.ToString() + ";;");
-                line3 = (line3 + Light4SightNG.ICChannel.Signalform + ";;");
-                line4 = (line4 + Light4SightNG.ICChannel.MittlereHelligkeit_cdm2.ToString() + ";;");
-                line5 = (line5 + Light4SightNG.ICChannel.Frequenz.ToString() + ";;");
-                line6 = (line6 + Light4SightNG.ICChannel.Phasenverschiebung.ToString() + ";;");
-                line7 = (line7 + Light4SightNG.ICChannel.KonSC1_100.ToString() + ";;");
-                line8 = (line8 + Light4SightNG.ICChannel.KonSC2_100.ToString() + ";;");
-                line9 = (line9 + Light4SightNG.ICChannel.SC1DeltaK_100.ToString() + ";;");
-                line10 = (line10 + Light4SightNG.ICChannel.SC2DeltaK_100.ToString() + ";;");
+                line2 = (line2 + KontrolliereMessungen.ICChannel.SignalAktiv.ToString() + ";;");
+                line3 = (line3 + KontrolliereMessungen.ICChannel.Signalform + ";;");
+                line4 = (line4 + KontrolliereMessungen.ICChannel.MittlereHelligkeit_cdm2.ToString() + ";;");
+                line5 = (line5 + KontrolliereMessungen.ICChannel.Frequenz.ToString() + ";;");
+                line6 = (line6 + KontrolliereMessungen.ICChannel.Phasenverschiebung.ToString() + ";;");
+                line7 = (line7 + KontrolliereMessungen.ICChannel.KonSC1_100.ToString() + ";;");
+                line8 = (line8 + KontrolliereMessungen.ICChannel.KonSC2_100.ToString() + ";;");
+                line9 = (line9 + KontrolliereMessungen.ICChannel.SC1DeltaK_100.ToString() + ";;");
+                line10 = (line10 + KontrolliereMessungen.ICChannel.SC2DeltaK_100.ToString() + ";;");
             }
             else
             {
@@ -247,17 +259,17 @@ namespace Light4SightNG
                 line10 = (line10 + ";;;");
             }
 
-            if (Light4SightNG.ORChannel.SignalAktiv == true)
+            if (KontrolliereMessungen.ORChannel.SignalAktiv == true)
             {
-                line2 = (line2 + Light4SightNG.ORChannel.SignalAktiv.ToString() + ";");
-                line3 = (line3 + Light4SightNG.ORChannel.Signalform + ";");
-                line4 = (line4 + Light4SightNG.ORChannel.MittlereHelligkeit_cdm2.ToString() + ";");
-                line5 = (line5 + Light4SightNG.ORChannel.Frequenz.ToString() + ";");
-                line6 = (line6 + Light4SightNG.ORChannel.Phasenverschiebung.ToString() + ";");
-                line7 = (line7 + Light4SightNG.ORChannel.KonSC1_100.ToString() + ";");
-                line8 = (line8 + Light4SightNG.ORChannel.KonSC2_100.ToString() + ";");
-                line9 = (line9 + Light4SightNG.ORChannel.SC1DeltaK_100.ToString() + ";");
-                line10 = (line10 + Light4SightNG.ORChannel.SC2DeltaK_100.ToString() + ";");
+                line2 = (line2 + KontrolliereMessungen.ORChannel.SignalAktiv.ToString() + ";");
+                line3 = (line3 + KontrolliereMessungen.ORChannel.Signalform + ";");
+                line4 = (line4 + KontrolliereMessungen.ORChannel.MittlereHelligkeit_cdm2.ToString() + ";");
+                line5 = (line5 + KontrolliereMessungen.ORChannel.Frequenz.ToString() + ";");
+                line6 = (line6 + KontrolliereMessungen.ORChannel.Phasenverschiebung.ToString() + ";");
+                line7 = (line7 + KontrolliereMessungen.ORChannel.KonSC1_100.ToString() + ";");
+                line8 = (line8 + KontrolliereMessungen.ORChannel.KonSC2_100.ToString() + ";");
+                line9 = (line9 + KontrolliereMessungen.ORChannel.SC1DeltaK_100.ToString() + ";");
+                line10 = (line10 + KontrolliereMessungen.ORChannel.SC2DeltaK_100.ToString() + ";");
             }
             else
             {
@@ -272,17 +284,17 @@ namespace Light4SightNG
                 line10 = (line10 + ";");
             }
 
-            if (Light4SightNG.OGChannel.SignalAktiv == true)
+            if (KontrolliereMessungen.OGChannel.SignalAktiv == true)
             {
-                line2 = (line2 + Light4SightNG.OGChannel.SignalAktiv.ToString() + ";");
-                line3 = (line3 + Light4SightNG.OGChannel.Signalform + ";");
-                line4 = (line4 + Light4SightNG.OGChannel.MittlereHelligkeit_cdm2.ToString() + ";");
-                line5 = (line5 + Light4SightNG.OGChannel.Frequenz.ToString() + ";");
-                line6 = (line6 + Light4SightNG.OGChannel.Phasenverschiebung.ToString() + ";");
-                line7 = (line7 + Light4SightNG.OGChannel.KonSC1_100.ToString() + ";");
-                line8 = (line8 + Light4SightNG.OGChannel.KonSC2_100.ToString() + ";");
-                line9 = (line9 + Light4SightNG.OGChannel.SC1DeltaK_100.ToString() + ";");
-                line10 = (line10 + Light4SightNG.OGChannel.SC2DeltaK_100.ToString() + ";");
+                line2 = (line2 + KontrolliereMessungen.OGChannel.SignalAktiv.ToString() + ";");
+                line3 = (line3 + KontrolliereMessungen.OGChannel.Signalform + ";");
+                line4 = (line4 + KontrolliereMessungen.OGChannel.MittlereHelligkeit_cdm2.ToString() + ";");
+                line5 = (line5 + KontrolliereMessungen.OGChannel.Frequenz.ToString() + ";");
+                line6 = (line6 + KontrolliereMessungen.OGChannel.Phasenverschiebung.ToString() + ";");
+                line7 = (line7 + KontrolliereMessungen.OGChannel.KonSC1_100.ToString() + ";");
+                line8 = (line8 + KontrolliereMessungen.OGChannel.KonSC2_100.ToString() + ";");
+                line9 = (line9 + KontrolliereMessungen.OGChannel.SC1DeltaK_100.ToString() + ";");
+                line10 = (line10 + KontrolliereMessungen.OGChannel.SC2DeltaK_100.ToString() + ";");
             }
             else
             {
@@ -297,17 +309,17 @@ namespace Light4SightNG
                 line10 = (line10 + ";");
             }
 
-            if (Light4SightNG.OBChannel.SignalAktiv == true)
+            if (KontrolliereMessungen.OBChannel.SignalAktiv == true)
             {
-                line2 = (line2 + Light4SightNG.OBChannel.SignalAktiv.ToString() + ";");
-                line3 = (line3 + Light4SightNG.OBChannel.Signalform + ";");
-                line4 = (line4 + Light4SightNG.OBChannel.MittlereHelligkeit_cdm2.ToString() + ";");
-                line5 = (line5 + Light4SightNG.OBChannel.Frequenz.ToString() + ";");
-                line6 = (line6 + Light4SightNG.OBChannel.Phasenverschiebung.ToString() + ";");
-                line7 = (line7 + Light4SightNG.OBChannel.KonSC1_100.ToString() + ";");
-                line8 = (line8 + Light4SightNG.OBChannel.KonSC2_100.ToString() + ";");
-                line9 = (line9 + Light4SightNG.OBChannel.SC1DeltaK_100.ToString() + ";");
-                line10 = (line10 + Light4SightNG.OBChannel.SC2DeltaK_100.ToString() + ";");
+                line2 = (line2 + KontrolliereMessungen.OBChannel.SignalAktiv.ToString() + ";");
+                line3 = (line3 + KontrolliereMessungen.OBChannel.Signalform + ";");
+                line4 = (line4 + KontrolliereMessungen.OBChannel.MittlereHelligkeit_cdm2.ToString() + ";");
+                line5 = (line5 + KontrolliereMessungen.OBChannel.Frequenz.ToString() + ";");
+                line6 = (line6 + KontrolliereMessungen.OBChannel.Phasenverschiebung.ToString() + ";");
+                line7 = (line7 + KontrolliereMessungen.OBChannel.KonSC1_100.ToString() + ";");
+                line8 = (line8 + KontrolliereMessungen.OBChannel.KonSC2_100.ToString() + ";");
+                line9 = (line9 + KontrolliereMessungen.OBChannel.SC1DeltaK_100.ToString() + ";");
+                line10 = (line10 + KontrolliereMessungen.OBChannel.SC2DeltaK_100.ToString() + ";");
             }
             else
             {
@@ -322,17 +334,17 @@ namespace Light4SightNG
                 line10 = (line10 + ";");
             }
 
-            if (Light4SightNG.OCChannel.SignalAktiv == true)
+            if (KontrolliereMessungen.OCChannel.SignalAktiv == true)
             {
-                line2 = (line2 + Light4SightNG.OCChannel.SignalAktiv.ToString() + ";");
-                line3 = (line3 + Light4SightNG.OCChannel.Signalform + ";");
-                line4 = (line4 + Light4SightNG.OCChannel.MittlereHelligkeit_cdm2.ToString() + ";");
-                line5 = (line5 + Light4SightNG.OCChannel.Frequenz.ToString() + ";");
-                line6 = (line6 + Light4SightNG.OCChannel.Phasenverschiebung.ToString() + ";");
-                line7 = (line7 + Light4SightNG.OCChannel.KonSC1_100.ToString() + ";");
-                line8 = (line8 + Light4SightNG.OCChannel.KonSC2_100.ToString() + ";");
-                line9 = (line9 + Light4SightNG.OCChannel.SC1DeltaK_100.ToString() + ";");
-                line10 = (line10 + Light4SightNG.OCChannel.SC2DeltaK_100.ToString() + ";");
+                line2 = (line2 + KontrolliereMessungen.OCChannel.SignalAktiv.ToString() + ";");
+                line3 = (line3 + KontrolliereMessungen.OCChannel.Signalform + ";");
+                line4 = (line4 + KontrolliereMessungen.OCChannel.MittlereHelligkeit_cdm2.ToString() + ";");
+                line5 = (line5 + KontrolliereMessungen.OCChannel.Frequenz.ToString() + ";");
+                line6 = (line6 + KontrolliereMessungen.OCChannel.Phasenverschiebung.ToString() + ";");
+                line7 = (line7 + KontrolliereMessungen.OCChannel.KonSC1_100.ToString() + ";");
+                line8 = (line8 + KontrolliereMessungen.OCChannel.KonSC2_100.ToString() + ";");
+                line9 = (line9 + KontrolliereMessungen.OCChannel.SC1DeltaK_100.ToString() + ";");
+                line10 = (line10 + KontrolliereMessungen.OCChannel.SC2DeltaK_100.ToString() + ";");
             }
             else
             {
@@ -359,7 +371,7 @@ namespace Light4SightNG
             LogFile("", true);
         }
 
-        private void closeAllPanels()
+        void closeAllPanels()
         {
             this.pnlOuterRed.Hide();
             this.pnlOuterRed.Visible = false;
@@ -379,11 +391,11 @@ namespace Light4SightNG
             this.pnlInnerCyan.Visible = false;
         }
 
-        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
 
             #region Panel Control
-            switch (e.Node.Name.ToString())
+            switch (e.Node.Name)
             {
                 case "tnOuterRed":
                     {
@@ -487,25 +499,21 @@ namespace Light4SightNG
         {
             double dLMax = (1 + (Kontrast / 100)) * MHcdm2;
             double dLMin = (1 - (Kontrast / 100)) * MHcdm2;
-            
-            if (dLMax > MHcdm2_max || dLMin < 0)
-                return ("Kontrastwert für " + KanalInfoString + " ist ungültig!");
-            
-            else
-                return "OK";
+
+            return dLMax > MHcdm2_max || dLMin < 0 ? "Kontrastwert für " + KanalInfoString + " ist ungültig!" : "OK";
         }
 
-        private void SignalEigenschaftenEinlesen()
+        void SignalEigenschaftenEinlesen()
         {
             IRChannel.SignalAktiv = cbAktivIR.Checked;
             if (cbAktivIR.Checked)
             {
                 IRChannel.Signalform = cbSigFormIR.Text;
                 IRChannel.Frequenz = int.Parse(tbFreqIR.Text);
-                IRChannel.KonSC1_100 = double.Parse(tbKonIRSC1.Text.ToString());
-                IRChannel.KonSC2_100 = double.Parse(tbKonIRSC2.Text.ToString());
-                IRChannel.SC1DeltaK_100 = double.Parse(tbIRSC1DeltaK.Text.ToString());
-                IRChannel.SC2DeltaK_100 = double.Parse(tbIRSC2DeltaK.Text.ToString());
+                IRChannel.KonSC1_100 = double.Parse(tbKonIRSC1.Text);
+                IRChannel.KonSC2_100 = double.Parse(tbKonIRSC2.Text);
+                IRChannel.SC1DeltaK_100 = double.Parse(tbIRSC1DeltaK.Text);
+                IRChannel.SC2DeltaK_100 = double.Parse(tbIRSC2DeltaK.Text);
                 IRChannel.MittlereHelligkeit_cdm2 = double.Parse(tbMHIR.Text);
                 IRChannel.Phasenverschiebung = int.Parse(tbPhasVerschIR.Text);
             }
@@ -515,10 +523,10 @@ namespace Light4SightNG
             {
                 IGChannel.Signalform = cbSigFormIG.Text;
                 IGChannel.Frequenz = int.Parse(tbFreqIG.Text);
-                IGChannel.KonSC1_100 = double.Parse(tbKonIGSC1.Text.ToString());
-                IGChannel.KonSC2_100 = double.Parse(tbKonIGSC2.Text.ToString());
-                IGChannel.SC1DeltaK_100 = double.Parse(tbIGSC1DeltaK.Text.ToString());
-                IGChannel.SC2DeltaK_100 = double.Parse(tbIGSC2DeltaK.Text.ToString());
+                IGChannel.KonSC1_100 = double.Parse(tbKonIGSC1.Text);
+                IGChannel.KonSC2_100 = double.Parse(tbKonIGSC2.Text);
+                IGChannel.SC1DeltaK_100 = double.Parse(tbIGSC1DeltaK.Text);
+                IGChannel.SC2DeltaK_100 = double.Parse(tbIGSC2DeltaK.Text);
                 IGChannel.MittlereHelligkeit_cdm2 = double.Parse(tbMHIG.Text);
                 IGChannel.Phasenverschiebung = int.Parse(tbPhasVerschIG.Text);
             }
@@ -528,10 +536,10 @@ namespace Light4SightNG
             {
                 IBChannel.Signalform = cbSigFormIB.Text;
                 IBChannel.Frequenz = int.Parse(tbFreqIB.Text);
-                IBChannel.KonSC1_100 = double.Parse(tbKonIBSC1.Text.ToString());
-                IBChannel.KonSC2_100 = double.Parse(tbKonIBSC2.Text.ToString());
-                IBChannel.SC1DeltaK_100 = double.Parse(tbIBSC1DeltaK.Text.ToString());
-                IBChannel.SC2DeltaK_100 = double.Parse(tbIBSC2DeltaK.Text.ToString());
+                IBChannel.KonSC1_100 = double.Parse(tbKonIBSC1.Text);
+                IBChannel.KonSC2_100 = double.Parse(tbKonIBSC2.Text);
+                IBChannel.SC1DeltaK_100 = double.Parse(tbIBSC1DeltaK.Text);
+                IBChannel.SC2DeltaK_100 = double.Parse(tbIBSC2DeltaK.Text);
                 IBChannel.MittlereHelligkeit_cdm2 = double.Parse(tbMHIB.Text);
                 IBChannel.Phasenverschiebung = int.Parse(tbPhasVerschIB.Text);
             }
@@ -541,10 +549,10 @@ namespace Light4SightNG
             {
                 ICChannel.Signalform = cbSigFormIC.Text;
                 ICChannel.Frequenz = int.Parse(tbFreqIC.Text);
-                ICChannel.KonSC1_100 = double.Parse(tbKonICSC1.Text.ToString());
-                ICChannel.KonSC2_100 = double.Parse(tbKonICSC2.Text.ToString());
-                ICChannel.SC1DeltaK_100 = double.Parse(tbICSC1DeltaK.Text.ToString());
-                ICChannel.SC2DeltaK_100 = double.Parse(tbICSC2DeltaK.Text.ToString());
+                ICChannel.KonSC1_100 = double.Parse(tbKonICSC1.Text);
+                ICChannel.KonSC2_100 = double.Parse(tbKonICSC2.Text);
+                ICChannel.SC1DeltaK_100 = double.Parse(tbICSC1DeltaK.Text);
+                ICChannel.SC2DeltaK_100 = double.Parse(tbICSC2DeltaK.Text);
                 ICChannel.MittlereHelligkeit_cdm2 = double.Parse(tbMHIC.Text);
                 ICChannel.Phasenverschiebung = int.Parse(tbPhasVerschIC.Text);
             }
@@ -554,10 +562,10 @@ namespace Light4SightNG
             {
                 ORChannel.Signalform = cbSigFormOR.Text;
                 ORChannel.Frequenz = int.Parse(tbFreqOR.Text);
-                ORChannel.KonSC1_100 = double.Parse(tbKonORSC1.Text.ToString());
-                ORChannel.KonSC2_100 = double.Parse(tbKonORSC2.Text.ToString());
-                ORChannel.SC1DeltaK_100 = double.Parse(tbORSC1DeltaK.Text.ToString());
-                ORChannel.SC2DeltaK_100 = double.Parse(tbORSC2DeltaK.Text.ToString());
+                ORChannel.KonSC1_100 = double.Parse(tbKonORSC1.Text);
+                ORChannel.KonSC2_100 = double.Parse(tbKonORSC2.Text);
+                ORChannel.SC1DeltaK_100 = double.Parse(tbORSC1DeltaK.Text);
+                ORChannel.SC2DeltaK_100 = double.Parse(tbORSC2DeltaK.Text);
                 ORChannel.MittlereHelligkeit_cdm2 = double.Parse(tbMHOR.Text);
                 ORChannel.Phasenverschiebung = int.Parse(tbPhasVerschOR.Text);
             }
@@ -567,10 +575,10 @@ namespace Light4SightNG
             {
                 OGChannel.Signalform = cbSigFormOG.Text;
                 OGChannel.Frequenz = int.Parse(tbFreqOG.Text);
-                OGChannel.KonSC1_100 = double.Parse(tbKonOGSC1.Text.ToString());
-                OGChannel.KonSC2_100 = double.Parse(tbKonOGSC2.Text.ToString());
-                OGChannel.SC1DeltaK_100 = double.Parse(tbOGSC1DeltaK.Text.ToString());
-                OGChannel.SC2DeltaK_100 = double.Parse(tbOGSC2DeltaK.Text.ToString());
+                OGChannel.KonSC1_100 = double.Parse(tbKonOGSC1.Text);
+                OGChannel.KonSC2_100 = double.Parse(tbKonOGSC2.Text);
+                OGChannel.SC1DeltaK_100 = double.Parse(tbOGSC1DeltaK.Text);
+                OGChannel.SC2DeltaK_100 = double.Parse(tbOGSC2DeltaK.Text);
                 OGChannel.MittlereHelligkeit_cdm2 = double.Parse(tbMHOG.Text);
                 OGChannel.Phasenverschiebung = int.Parse(tbPhasVerschOG.Text);
             }
@@ -580,10 +588,10 @@ namespace Light4SightNG
             {
                 OBChannel.Signalform = cbSigFormOB.Text;
                 OBChannel.Frequenz = int.Parse(tbFreqOB.Text);
-                OBChannel.KonSC1_100 = double.Parse(tbKonOBSC1.Text.ToString());
-                OBChannel.KonSC2_100 = double.Parse(tbKonOBSC2.Text.ToString());
-                OBChannel.SC1DeltaK_100 = double.Parse(tbOBSC1DeltaK.Text.ToString());
-                OBChannel.SC2DeltaK_100 = double.Parse(tbOBSC2DeltaK.Text.ToString());
+                OBChannel.KonSC1_100 = double.Parse(tbKonOBSC1.Text);
+                OBChannel.KonSC2_100 = double.Parse(tbKonOBSC2.Text);
+                OBChannel.SC1DeltaK_100 = double.Parse(tbOBSC1DeltaK.Text);
+                OBChannel.SC2DeltaK_100 = double.Parse(tbOBSC2DeltaK.Text);
                 OBChannel.MittlereHelligkeit_cdm2 = double.Parse(tbMHOB.Text);
                 OBChannel.Phasenverschiebung = int.Parse(tbPhasVerschOB.Text);
             }
@@ -593,30 +601,30 @@ namespace Light4SightNG
             {
                 OCChannel.Signalform = cbSigFormOC.Text;
                 OCChannel.Frequenz = int.Parse(tbFreqOC.Text);
-                OCChannel.KonSC1_100 = double.Parse(tbKonOCSC1.Text.ToString());
-                OCChannel.KonSC2_100 = double.Parse(tbKonOCSC2.Text.ToString());
-                OCChannel.SC1DeltaK_100 = double.Parse(tbOCSC1DeltaK.Text.ToString());
-                OCChannel.SC2DeltaK_100 = double.Parse(tbOCSC2DeltaK.Text.ToString());
+                OCChannel.KonSC1_100 = double.Parse(tbKonOCSC1.Text);
+                OCChannel.KonSC2_100 = double.Parse(tbKonOCSC2.Text);
+                OCChannel.SC1DeltaK_100 = double.Parse(tbOCSC1DeltaK.Text);
+                OCChannel.SC2DeltaK_100 = double.Parse(tbOCSC2DeltaK.Text);
                 OCChannel.MittlereHelligkeit_cdm2 = double.Parse(tbMHOC.Text);
                 OCChannel.Phasenverschiebung = int.Parse(tbPhasVerschOC.Text);
             }
 
 
         }
- 
-        private void btnUntersuchungStarten_Click(object sender, EventArgs e)
+
+        void btnUntersuchungStarten_Click(object sender, EventArgs e)
         {
             if (CheckProband())
             {
                 DateTime time = DateTime.Now;
                 string format = "yyyy-MM-dd_HHmmss";
 
-                if (this.testeCFF) logfiletmp = new LogWriter(tbProbandenNummer.Text.ToString() + "_" + this.cbAugenseite.Text.ToString() +"_" + time.ToString(format) + ".cff", false);
-                else logfiletmp = new LogWriter(tbProbandenNummer.Text.ToString() + "_" + this.cbAugenseite.Text.ToString() + "_" + time.ToString(format) + ".txt", false);
-                
+                if (this.testeCFF) logfiletmp = new LogWriter(tbProbandenNummer.Text + "_" + this.cbAugenseite.Text + "_" + time.ToString(format) + ".cff", false);
+                else logfiletmp = new LogWriter(tbProbandenNummer.Text + "_" + this.cbAugenseite.Text + "_" + time.ToString(format) + ".txt", false);
+
                 this.SignalEigenschaftenEinlesen();
 
-                clGlobals.flagUntersuchunglaeuft = true;
+                Globals.flagUntersuchunglaeuft = true;
                 this.btnUntersuchungAbbrechen.Enabled = true;
                 this.btnUntersuchungStarten.Enabled = false;
                 this.tbUntersuchungsVerlauf.Clear();
@@ -625,35 +633,47 @@ namespace Light4SightNG
                 this.cbAugenseite.Enabled = false;
                 this.KeyPreview = true;
 
-                if (testeCFF)
+                if ((IRChannel.SC1DeltaK_100 < float.Epsilon) &&
+                    (IGChannel.SC1DeltaK_100 < float.Epsilon) &&
+                    (Math.Abs(IBChannel.SC1DeltaK_100) < float.Epsilon) &&
+                    (ICChannel.SC1DeltaK_100 < float.Epsilon))
                 {
-                    stdStrategie = new StdStrategieCFF();
+                    if (UseBestPEST) Strategie = new BestPEST(mainProgram);
+                    else stdStrategie = new StdStrategie(mainProgram, "außen", testeCFF);
                 }
                 else
                 {
-                    stdStrategie = new StdStrategie();
+                    if (UseBestPEST) Strategie = new BestPEST(mainProgram);
+                    else stdStrategie = new StdStrategie(mainProgram, "innen", testeCFF);
                 }
+                if (UseBestPEST) Strategie.Abbruch += new EventHandler<AbbruchEventArgs>(stdStrategie_abbruch);
+                else stdStrategie.abbruch += new EventHandler<AbbruchEventArgs>(stdStrategie_abbruch);
 
-                    stdStrategie.abbruch += new EventHandler<AbbruchEventArgs>(stdStrategie_abbruch);
-                    if (freq > 0) stdStrategie._setNewFrequency(freq);
-                    stdStrategie.StartStdStrategie();
+                if (!testeCFF)
+                {
+                    if (freq > 0)
+                    {
+                        if (UseBestPEST) Strategie._setNewFrequency(freq);
+                        else stdStrategie._setNewFrequency(freq);
+                    }
+                }
             }
         }
 
-        private bool CheckProband()
+        bool CheckProband()
         {
             if (tbProbandenNummer.Text.ToString() == "" || this.cbAugenseite.Text.ToString() == "")
             {
-                MessageBox.Show("Probandendaten nicht korrekt" + "\nProbandennummer: " + tbProbandenNummer.Text.ToString() + "\nAugenseite: " + this.cbAugenseite.Text.ToString());
+                MessageBox.Show("Probandendaten nicht korrekt" + "\nProbandennummer: " + tbProbandenNummer.Text + "\nAugenseite: " + this.cbAugenseite.Text);
                 return false;
             }
-            else return true;
+            return true;
         }
 
         void stdStrategie_abbruch(object sender, AbbruchEventArgs e)
         {
             this.KeyPreview = false;
-            if (stdStrategie!=null)
+            if (stdStrategie != null)
             {
                 stdStrategie.SignalStoppen();
                 Thread.Sleep(100);
@@ -664,11 +684,10 @@ namespace Light4SightNG
             this.btnUntersuchungStarten.Enabled = true;
             this.tbProbandenNummer.Enabled = true;
             this.cbAugenseite.Enabled = true;
-            AudioControl.Dispose();
-            this.Dispose(); 
+            this.Dispose();
         }
 
-        private void btnUntersuchungAbbrechen_Click(object sender, EventArgs e)
+        void btnUntersuchungAbbrechen_Click(object sender, EventArgs e)
         {
             Thread.Sleep(100);
             AbbruchEventArgs mye = new AbbruchEventArgs("");
@@ -692,15 +711,29 @@ namespace Light4SightNG
                 this.btnUntersuchungAbbrechen.Enabled = false;
         }
 
-        private void Light4SightNG_KeyDown(object sender, KeyEventArgs e)
+        void Light4SightNG_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Y)
             {
-                if (stdStrategie != null) { stdStrategie.gesehen_KeyDown(e); }
+                if (UseBestPEST)
+                {
+                    if (Strategie != null) { Strategie.Gesehen_KeyDown(e); }
+                }
+                else
+                {
+                    if (stdStrategie != null) { stdStrategie.Gesehen_KeyDown(e); }
+                }
             }
             if (e.KeyCode == Keys.M)
             {
-                if (stdStrategie != null) { stdStrategie.nichtgesehen_KeyDown(e); }
+                if (UseBestPEST)
+                {
+                    if (Strategie != null) { Strategie.Nichtgesehen_KeyDown(e); }
+                }
+                else
+                {
+                    if (stdStrategie != null) { stdStrategie.Nichtgesehen_KeyDown(e); }
+                }
             }
             if (e.KeyCode == Keys.Q)
             {
@@ -712,28 +745,27 @@ namespace Light4SightNG
             }
         }
 
-        private void Light4SightNG_FormClosing(object sender, FormClosingEventArgs e)
+        void Light4SightNG_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.KeyPreview = false;
-            AudioControl.Dispose();   
         }
 
-        private void btnLoadPreset_Click(object sender, EventArgs e)
+        void btnLoadPreset_Click(object sender, EventArgs e)
         {
             btnLoadPreset_Click(sender, e, "");
         }
 
-        private void btnLoadPreset_Click(object sender, EventArgs e, string dateiname)
+        void btnLoadPreset_Click(object sender, EventArgs e, string dateiname)
         {
             if (dateiname == "")
             {
                 dateiname = openFileDialog1.FileName;
-                openFileDialog1.InitialDirectory = Path.GetDirectoryName(Application.ExecutablePath).ToString() + @"\presets\";
+                openFileDialog1.InitialDirectory = Path.GetDirectoryName(Application.ExecutablePath) + @"\presets\";
                 openFileDialog1.RestoreDirectory = true;
                 openFileDialog1.Filter = "preset files (*.pre)|*.pre";
                 if (openFileDialog1.ShowDialog() != DialogResult.OK) { dateiname = ""; } else { dateiname = openFileDialog1.FileName; }
             }
-            
+
             if (dateiname != "")
             {
                 StreamReader sr = new StreamReader(dateiname);
@@ -743,8 +775,8 @@ namespace Light4SightNG
                 blah = sr.ReadToEnd();
 
 
-                char[] delimiters = new char[] { '\n' };
-                char[] delimiters2 = new char[] { ';' };
+                char[] delimiters = { '\n' };
+                char[] delimiters2 = { ';' };
                 List<string[]> columns = new List<string[]>();
                 temp.AddRange(blah.Split(delimiters));
                 foreach (string s in temp)
@@ -842,13 +874,13 @@ namespace Light4SightNG
             }
         }
 
-        private void btnSavePreset_Click(object sender, EventArgs e)
+        void btnSavePreset_Click(object sender, EventArgs e)
         {
             SignalEigenschaftenEinlesen();
             DirectoryInfo d = new DirectoryInfo(@".\presets\");
             d.Create();
-            
-            saveFileDialog1.InitialDirectory = Path.GetDirectoryName(Application.ExecutablePath).ToString() + @"\presets\";
+
+            saveFileDialog1.InitialDirectory = Path.GetDirectoryName(Application.ExecutablePath) + @"\presets\";
             saveFileDialog1.RestoreDirectory = true;
             saveFileDialog1.Filter = "preset files (*.pre)|*.pre";
 
@@ -857,7 +889,7 @@ namespace Light4SightNG
                 StreamWriter sw = new StreamWriter(saveFileDialog1.FileName);
                 string temp = string.Empty;
 
-                foreach (clSignalDescription chan in channels)
+                foreach (ChannelDescription chan in channels)
                 {
                     temp = chan.SignalAktiv.ToString() + ";";
                     temp = temp + chan.Signalform + ";";
@@ -875,5 +907,11 @@ namespace Light4SightNG
             }
 
         }
+
+        void Light4SightNG_Load(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

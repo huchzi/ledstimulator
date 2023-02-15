@@ -15,7 +15,6 @@ namespace Light4SightNG
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Startfenster());
-        }
-    }
+            Application.Run(new Steuerung());
+        }    }
 }

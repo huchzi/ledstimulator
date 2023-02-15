@@ -8,23 +8,26 @@ namespace Light4SightNG
 {
     public class LogWriter
     {
-        private StreamWriter LogFile;
-        private bool debugfile = false;
-        private string filename;
+        readonly StreamWriter LogFile;
+        bool debugfile = false;
+        readonly string filename;
 
         public LogWriter(string dateiname, bool debug)
         {
             this.filename = @".\Untersuchungen\" + dateiname;
 
             if (debug == true)
+            {
                 this.debugfile = true;
+            }
+
             try
             {
                 DirectoryInfo d = new DirectoryInfo(@".\Untersuchungen\");
                 d.Create();
                 this.LogFile = new StreamWriter(this.filename);
             }
-            catch
+            catch (Exception e)
             {
             }
         }
@@ -35,12 +38,9 @@ namespace Light4SightNG
             {
                 this.LogFile.WriteLine(info);
                 this.LogFile.Flush();
-                if (this.debugfile == false)
-                    return ("In " + this.filename + "geschrieben: " + info);
-                else
-                    return ("");
+                return this.debugfile == false ? "In " + this.filename + "geschrieben: " + info : "";
             }
-            catch 
+            catch
             {
                 return ("Fehler beim Schreiben in " + this.filename);
             }
@@ -51,17 +51,11 @@ namespace Light4SightNG
             try
             {
                 this.LogFile.Close();
-                if (this.debugfile == false)
-                    return (this.filename + " wurde geschlossen");
-                else
-                    return "";
+                return this.debugfile == false ? this.filename + " wurde geschlossen" : "";
             }
             catch
             {
-                if (this.debugfile == false)
-                    return ("Beim Schließen von " + this.filename + " ist ein Fehler aufgetreten.");
-                else
-                    return "";
+                return this.debugfile == false ? "Beim Schließen von " + this.filename + " ist ein Fehler aufgetreten." : "";
             }
         }
 
