@@ -1,10 +1,17 @@
-﻿using SlimDX.XAudio2;
-using System;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading;
+using SlimDX;
+using SlimDX.XAudio2;
+using SlimDX.Multimedia;
+using System.Runtime.InteropServices;
+using WinMM;
+using System.IO;
 
 
-namespace CalibrateLEDStimulator
+namespace Light4SightNG
 {
     internal class clAudioControl : IDisposable
     {
@@ -19,6 +26,8 @@ namespace CalibrateLEDStimulator
         private Thread m_soundThread = null;
         private ThreadStart soundThreadStart = null;
 
+
+        
         public clAudioControl()
         {
             SignalFormat = new SlimDX.Multimedia.WaveFormat();
@@ -36,6 +45,19 @@ namespace CalibrateLEDStimulator
             try
             {
                 clGlobals.waveDaten = new byte[cbWaveSize];
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private bool ClearWaveContainer()
+        {
+            try
+            {
+                clGlobals.waveDaten = null;
                 return true;
             }
             catch
@@ -64,7 +86,6 @@ namespace CalibrateLEDStimulator
             WaveBuffer.AudioData = WaveMemStream;
             WaveBuffer.AudioBytes = clGlobals.BytesProSekunde;
             WaveBuffer.LoopCount = XAudio2.LoopInfinite;
-            // WaveBuffer.LoopCount = 1;
 
             WaveSourceVoice = new SourceVoice(AudioDevice, SignalFormat);
             WaveSourceVoice.SubmitSourceBuffer(WaveBuffer);
@@ -73,6 +94,7 @@ namespace CalibrateLEDStimulator
 
             while (clGlobals.bPlaySignal)
             {
+                
                 Thread.Sleep(10);
             }
 
@@ -96,28 +118,10 @@ namespace CalibrateLEDStimulator
             }
         }
 
-        public void UpdateSignal()
+        ~clAudioControl()
         {
-            WaveSourceVoice.Stop();
-
-            WaveMemStream = new MemoryStream(clGlobals.waveDaten);
-
-            WaveBuffer = new AudioBuffer();
-            WaveBuffer.Flags = BufferFlags.EndOfStream;
-            WaveBuffer.AudioData = WaveMemStream;
-            WaveBuffer.AudioBytes = clGlobals.BytesProSekunde;
-            WaveBuffer.LoopCount = XAudio2.LoopInfinite;
-
-            WaveSourceVoice = new SourceVoice(AudioDevice, SignalFormat);
-            WaveSourceVoice.SubmitSourceBuffer(WaveBuffer);
-
-            WaveSourceVoice.Start();
-        }
-
-        public void UpdateSignal(OneColor LEDs)
-        {
-            clSignalGeneration.CalibrationSignal(LEDs);
-            this.UpdateSignal();
+            this.StopSignal();
+            
         }
 
         #region IDisposable Member
@@ -128,8 +132,9 @@ namespace CalibrateLEDStimulator
 
             WaveMasterVoice.Dispose();
 
-
-            // AudioDevice.Dispose();
+    
+            AudioDevice.Dispose();
+            AudioDevice = new XAudio2();
         }
 
         #endregion

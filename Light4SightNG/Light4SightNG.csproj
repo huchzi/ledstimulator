@@ -8,8 +8,8 @@
     <ProjectGuid>{47431519-64C7-41E0-A393-111C0ACF0FC1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CalibrateLEDStimulator</RootNamespace>
-    <AssemblyName>CalibrateLEDStimulator</AssemblyName>
+    <RootNamespace>Light4SightNG</RootNamespace>
+    <AssemblyName>Light4SightNG</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -42,27 +42,25 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\CalibrateLEDStimulator.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Light4SightNG.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\_Data\NewCalibration\</OutputPath>
+    <OutputPath>C:\Dokumente und Einstellungen\Light4sight\Desktop\Light4Sight_release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>Light4SightNG.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>CalibrateLEDStimulator.Program</StartupObject>
+    <StartupObject>Light4SightNG.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Debug\Light4SightNG.XML</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -80,11 +78,14 @@
     <Reference Include="SlimDX, Version=2.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -96,20 +97,34 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calibration.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Calibration.Designer.cs">
-      <DependentUpon>Calibration.cs</DependentUpon>
-    </Compile>
     <Compile Include="EventArgs\AbbruchEventArgs.cs" />
     <Compile Include="clAudioControl.cs" />
+    <Compile Include="clCalibration.cs" />
     <Compile Include="clGlobals.cs" />
-    <Compile Include="OneColor.cs" />
+    <Compile Include="clSignalDescription.cs" />
+    <Compile Include="clTestChannels.cs" />
+    <Compile Include="Light4SightNG.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Light4SightNG.designer.cs">
+      <DependentUpon>Light4SightNG.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Startfenster.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Startfenster.Designer.cs">
+      <DependentUpon>Startfenster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LogWriter.cs">
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Calibration.resx">
-      <DependentUpon>Calibration.cs</DependentUpon>
+    <Compile Include="StdStrategie.cs" />
+    <EmbeddedResource Include="Light4SightNG.resx">
+      <DependentUpon>Light4SightNG.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Startfenster.resx">
+      <DependentUpon>Startfenster.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -1,19 +1,21 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace CalibrateLEDStimulator
+namespace Light4SightNG
 {
     static class Program
     {
         /// <summary>
-        /// Main entry point for the application.
+        /// Der Haupteinstiegspunkt für die Anwendung.
         /// </summary>
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Calibration());
+            Application.Run(new Startfenster());
         }
     }
 }
