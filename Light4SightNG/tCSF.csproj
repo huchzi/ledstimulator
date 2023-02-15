@@ -99,7 +99,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CalibrationData.cs" />
     <Compile Include="EventArgs\AbbruchEventArgs.cs" />
     <Compile Include="AudioControlClass.cs" />
     <Compile Include="Globals.cs" />
