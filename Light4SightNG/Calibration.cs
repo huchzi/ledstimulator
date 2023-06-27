@@ -2,6 +2,7 @@
 using System;
 using System.Threading;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Light4SightNG
 {
@@ -37,6 +38,7 @@ namespace Light4SightNG
                 foreach (DeviceInstance di in dinput.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly))
                 {
                     logBox.AppendText($"{di.ProductGuid.ToString()}\n{di.ProductName}\n\n".Replace("\n", Environment.NewLine));
+
                     if (di.ProductName == "Logitech Cordless RumblePad 2 USB")
                     {
                         gamepad_uid = di.ProductGuid;
@@ -48,6 +50,11 @@ namespace Light4SightNG
 
             }
 
+            logBox.AppendText($"{Environment.Newline}1. Adjust LED ratios.");
+            logBox.AppendText($"{Environment.Newline}2. Mount and adjust sensor.");
+            logBox.AppendText($"{Environment.Newline}2. Press start.");
+
+            SaveResults.Enabled = false;
 
             gamepad = new Joystick(dinput, gamepad_uid);
             gamepad.Acquire();
@@ -74,17 +81,25 @@ namespace Light4SightNG
 
             logBox.Clear();
 
-            logBox.AppendText("Calibrating person: \n");
-            logBox.AppendText("Filters: \n");
-            logBox.AppendText("Name of ILT output file: \n\n");
+            logBox.AppendText($"Calibrating person: {Examiner.Text}{Environment.NewLine}");
+            logBox.AppendText($"Filters: {Filters.Text}{Environment.NewLine}");
+            logBox.AppendText($"Distance (to lens): {Distance.Text}{Environment.NewLine}");
 
             logBox.AppendText(
-                $"Red: {ratios[0]}\n".Replace("\n", Environment.NewLine) +
-                $"Green: {ratios[1]}\n".Replace("\n", Environment.NewLine) +
-                $"Blue: {ratios[2]}\n".Replace("\n", Environment.NewLine) +
-                $"Cyan: {ratios[3]}\n\n".Replace("\n", Environment.NewLine));
+                $"----------{Environment.NewLine}" +
+                $"Red: {ratios[0]}{Environment.NewLine}" +
+                $"Green: {ratios[1]}{Environment.NewLine}" +
+                $"Blue: {ratios[2]}{Environment.NewLine}" +
+                $"Cyan: {ratios[3]}{Environment.NewLine}" +
+                $"----------{Environment.NewLine}");
 
-            MessageBox.Show("Start recording. After pressing the button, calibration will start in 20 sec.");
+            MessageBox.Show("1. Start ILS-Meter Software.\n" +
+                "2. Check that device is connected and set Display Units to W/m²\n" +
+                "3. Open settings. Set Meter Factor to 1 and Recording Interval to 1s\n" +
+                "4. Start Chart\n" +
+                "5. Turn of monitor and 'zero' the device\n" +
+                "6. Start recording.\n" +
+                "7. After pressing the button, calibration will start in 20 sec.");
 
             // Give 5 sec for darkening the room
             Thread.Sleep(20000);
@@ -123,6 +138,9 @@ namespace Light4SightNG
             logBox.AppendText($"Calibration ended: {System.DateTime.Now.ToString()}\n".Replace("\n", Environment.NewLine));
 
             Thread.Sleep(5000);
+
+            SaveResults.Enabled = true;
+            SaveCalibrationFile();
 
             brightAudio.InitWaveContainer();
             CalculateIntensities(activeLED, 0.5);
@@ -209,5 +227,30 @@ namespace Light4SightNG
 
         }
 
+        private void SaveCalibrationFile()
+        {
+            OpenFileDialog findFile = new OpenFileDialog();
+            findFile.Title = "Please select ILT output file:";
+
+            if (findFile.ShowDialog() == DialogResult.OK)
+            {
+                logBox.AppendText($"{Environment.NewLine}----------{Environment.NewLine}ILT: {findFile.FileName}{Environment.NewLine}");
+
+                SaveFileDialog calFile = new SaveFileDialog();
+                calFile.Title = "Please save calibration data to file:";
+                calFile.ShowDialog();
+                File.WriteAllText(calFile.FileName, logBox.Text);
+
+                calFile.Dispose();
+            }
+            else MessageBox.Show("Alert: Calibration file not successfully saved.");
+
+            findFile.Dispose();
+        }
+
+        private void SaveResults_Click(object sender, EventArgs e)
+        {
+            SaveCalibrationFile();
+        }
     }
 }
