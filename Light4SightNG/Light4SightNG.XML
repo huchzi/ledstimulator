@@ -4,24 +4,24 @@
         <name>CalibrateLEDStimulator</name>
     </assembly>
     <members>
-        <member name="F:CalibrateLEDStimulator.Calibration.components">
+        <member name="F:Light4SightNG.Calibration.components">
             <summary>
             Required designer variable.
             </summary>
         </member>
-        <member name="M:CalibrateLEDStimulator.Calibration.Dispose(System.Boolean)">
+        <member name="M:Light4SightNG.Calibration.Dispose(System.Boolean)">
             <summary>
             Clean up any resources being used.
             </summary>
             <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         </member>
-        <member name="M:CalibrateLEDStimulator.Calibration.InitializeComponent">
+        <member name="M:Light4SightNG.Calibration.InitializeComponent">
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
             </summary>
         </member>
-        <member name="M:CalibrateLEDStimulator.Program.Main">
+        <member name="M:Light4SightNG.Program.Main">
             <summary>
             Main entry point for the application.
             </summary>

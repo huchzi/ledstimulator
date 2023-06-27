@@ -2,7 +2,6 @@
 using System;
 using System.Threading;
 using System.Windows.Forms;
-using System.IO;
 
 namespace CalibrateLEDStimulator
 {
@@ -43,7 +42,6 @@ namespace CalibrateLEDStimulator
 
             }
 
-            SaveResults.Enabled = false;
 
             gamepad = new Joystick(dinput, gamepad_uid);
             gamepad.Acquire();
@@ -68,16 +66,15 @@ namespace CalibrateLEDStimulator
 
             logBox.Clear();
 
-            logBox.AppendText($"Calibrating person: {Examiner.Text}\n");
-            logBox.AppendText($"Filters: {Filters.Text}\n");
+            logBox.AppendText("Calibrating person: \n");
+            logBox.AppendText("Filters: \n");
+            logBox.AppendText("Name of ILT output file: \n\n");
 
             logBox.AppendText(
-                $"----------{Environment.NewLine}" +
                 $"Red: {myLEDs.RatioRED}{Environment.NewLine}" +
                 $"Green: {myLEDs.RatioGREEN}{Environment.NewLine}" +
                 $"Blue: {myLEDs.RatioBLUE}{Environment.NewLine}" +
-                $"Cyan: {myLEDs.RatioCYAN}{Environment.NewLine}" +
-                $"----------{Environment.NewLine}");
+                $"Cyan: {myLEDs.RatioCYAN}{Environment.NewLine}{Environment.NewLine}");
 
             MessageBox.Show("1. Start ILS-Meter Software.\n" +
                 "2. Check that device is connected and set Display Units to W/m²\n" +
@@ -126,9 +123,6 @@ namespace CalibrateLEDStimulator
             logBox.AppendText($"Calibration ended: {System.DateTime.Now}{Environment.NewLine}");
 
             Thread.Sleep(5000);
-
-            SaveResults.Enabled = true;
-            SaveCalibrationFile();
 
             myLEDs.BaseIntensity = 0.5;
             brightAudio.UpdateSignal(myLEDs);
@@ -188,32 +182,6 @@ namespace CalibrateLEDStimulator
             brightAudio.StopSignal();
             Thread.Sleep(500);
             brightAudio.Dispose();
-        }
-
-        private void SaveResults_Click(object sender, EventArgs e)
-        {
-            SaveCalibrationFile();
-        }
-
-        private void SaveCalibrationFile()
-        {
-            OpenFileDialog findFile = new OpenFileDialog();
-            findFile.Title = "Please select ILT output file:";
-
-            if (findFile.ShowDialog() == DialogResult.OK)
-            {
-                logBox.AppendText($"{Environment.NewLine}----------{Environment.NewLine}ILT: {findFile.FileName}{Environment.NewLine}");
-
-                SaveFileDialog calFile = new SaveFileDialog();
-                calFile.Title = "Please save calibration data to file:";
-                calFile.ShowDialog();
-                File.WriteAllText(calFile.FileName, logBox.Text);
-
-                calFile.Dispose();
-            }
-            else MessageBox.Show("Alert: Calibration file not successfully saved.");
-
-            findFile.Dispose();
         }
 
     }
