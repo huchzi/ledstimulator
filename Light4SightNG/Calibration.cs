@@ -76,9 +76,15 @@ namespace CalibrateLEDStimulator
                 $"Blue: {myLEDs.RatioBLUE}{Environment.NewLine}" +
                 $"Cyan: {myLEDs.RatioCYAN}{Environment.NewLine}{Environment.NewLine}");
 
-            MessageBox.Show("Start recording. After pressing the button, calibration will start in 20 sec.");
+            MessageBox.Show("1. Start ILS-Meter Software.\n" +
+                "2. Check that device is connected and set Display Units to W/m²\n" +
+                "3. Open settings. Set Meter Factor to 1 and Recording Interval to 1s\n" +
+                "4. Start Capture\n" +
+                "5. Turn of monitor and 'zero' the device\n" +
+                "6. Start recording.\n" +
+                "7. After pressing the button, calibration will start in 20 sec.");
 
-            // Give 5 sec for darkening the room
+            // Give 20 sec for darkening the room
             Thread.Sleep(20000);
 
             logBox.AppendText($"Calibration started: {System.DateTime.Now}{Environment.NewLine}");
