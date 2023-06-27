@@ -22,7 +22,7 @@
                 {
                     if (ratios[activeLED] > 0)
                     {
-                        return baseIntensity / (1 + ratios[activeLED]);
+                        return baseIntensity * (1 - ratios[activeLED]);
                     }
                     else
                     {
